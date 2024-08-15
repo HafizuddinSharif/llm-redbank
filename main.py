@@ -93,7 +93,7 @@ async def start_chat(customerData: CustomerData):
         },  # constructs a key "abc123" in `store`.
     )
 
-    return {"response": query}
+    return query
 
 @app.post("/chat")
 async def on_chat(query_txt: Query):
@@ -107,7 +107,7 @@ async def on_chat(query_txt: Query):
         },  # constructs a key "abc123" in `store`.
     )
 
-    return {"response": query}
+    return query
 
 UPLOAD_DIRECTORY = "uploaded_files"
 

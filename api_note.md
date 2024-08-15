@@ -25,8 +25,23 @@ To start the chatbot. This API require to supply the brn number to get the appro
 
 ```
 {
-    "success": true,
-    "response": "...."
+    "input": true,
+    "chat_history": [
+        {
+            "content": "...",
+            "type": "human",
+            // there's more but not important
+        }
+    ],
+    "context": [
+        {
+            "id": 1,
+            metadata: { source: "/document.md" },
+            "page_content": "...",
+            "type": "Document"
+        }
+    ],
+    "answer": "..."
 }
 ```
 
@@ -45,7 +60,22 @@ To continue chatting with the chatbot. POST "/start-chat" should be called first
 
 ```
 {
-    "success": true
-    "response": "...."
+    "input": true,
+    "chat_history": [
+        {
+            "content": "...",
+            "type": "human",
+            // there's more but not important
+        }
+    ],
+    "context": [
+        {
+            "id": 1,
+            metadata: { source: "/document.md" },
+            "page_content": "...",
+            "type": "Document"
+        }
+    ],
+    "answer": "..."
 }
 ```
