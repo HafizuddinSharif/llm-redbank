@@ -10,14 +10,14 @@ To check if chatbot is ready to start chat
 }
 ```
 
-## POST "/start-chat"
+## POST "/start-chat/{chatbot_name}"
 
 To start the chatbot. This API require to supply the brn number to get the appropiate ctos data
 **request**
 
 ```
 {
-    brn: "12345F"
+    "brn": "12345F"
 }
 ```
 
@@ -25,7 +25,7 @@ To start the chatbot. This API require to supply the brn number to get the appro
 
 ```
 {
-    "input": true,
+    "input": "This is where the user question will be shown",
     "chat_history": [
         {
             "content": "...",
@@ -41,18 +41,20 @@ To start the chatbot. This API require to supply the brn number to get the appro
             "type": "Document"
         }
     ],
-    "answer": "..."
+    "answer": "...",
+    "session_id": "session_1"
 }
 ```
 
-## POST "/chat"
+## POST "/chat/{chatbot_name}"
 
-To continue chatting with the chatbot. POST "/start-chat" should be called first before this.
+To continue chatting with the chatbot. POST "/start-chat/{chatbot_name}" should be called first before this.
 **request:**
 
 ```
 {
-    query: "12345F"
+    "query": "I have a question and I need answers",
+    "session_id": "session_1"
 }
 ```
 
