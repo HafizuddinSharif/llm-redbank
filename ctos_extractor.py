@@ -1,4 +1,5 @@
 import xmltodict
+from xml.dom.minidom import parseString
 
 def extract_xml(brn):
     try :
@@ -29,6 +30,7 @@ def extract_xml(brn):
 
     # Extract and print the values
     extracted_data = {}
+    '''
     for key, label in tags_to_extract.items():
         # element = root.find(f".//{key}")
         element = accounts[0][key]
@@ -36,6 +38,25 @@ def extract_xml(brn):
             extracted_data[label] = element
         else:
             extracted_data[label] = None
+    '''
+
+    dom = parseString(xml_content)
+    totalNumberOfAccount = int(len(dom.getElementsByTagName('account')) / 2)
+    print("find number of account: " + str(totalNumberOfAccount))
+
+    for i in range(totalNumberOfAccount):
+        date = xml_dict['report']['enq_report']['enquiry']['section_a']['record']['accounts']['account'][i]['pldd']
+        print("current date is: " + date)
+
+        currentYear =  date[6:10]
+        print("current year is: " + currentYear)
+
+        for key, label in tags_to_extract.items():
+            
+            if accounts[i][key] is None:
+                accounts[i][key] = 0.0
+
+            extracted_data[label + " in " + currentYear] = accounts[i][key]
 
     # Print the extracted data
     # for label, value in extracted_data.items():
