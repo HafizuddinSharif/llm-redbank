@@ -29,3 +29,11 @@ archive.zip
 
 # macOS
 .DS_Store
+
+# temp database
+chroma_db/*
+uploaded_dir/*
+
+# allowing certain data so it can be test out
+!chroma_db/sharif
+!uploaded_dir/sharif
