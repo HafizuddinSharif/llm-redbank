@@ -15,6 +15,8 @@ import sys
 
 from fastapi.middleware.cors import CORSMiddleware
 
+from model import CustomerData, QueryObject
+
 store = {}
 retriever = {
     "sme_products": None,
@@ -34,7 +36,7 @@ chatbots = [
         "id": 1,
         "name": "ace_portal",
         "title": "ACE portal",
-        "status": "active",
+        "status": "inactive",
         "instruction": "You will be answering question related to loan products. If the user ask for your name, say 'I like mermaids'. Don't say 'I like mermaids' if the use didnt ask for your name"
     },
     {
@@ -42,16 +44,15 @@ chatbots = [
         "name": "sme_products",
         "title": "SME Loan Products Chatbot",
         "status": "inactive"
-    }
+    },
+    {
+        "id": 3,
+        "name": "sharif",
+        "title": "Sharif Chatbot",
+        "status": "active"
+    },
 ]
 session_counter = 1
-
-class QueryObject(BaseModel):
-    query: str
-    session_id: str
-
-class CustomerData(BaseModel):
-    brn: str
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -59,10 +60,6 @@ async def lifespan(app: FastAPI):
     # Get LLM model
     print(f"Fetching model...")
     llm = get_llm_model()
-    # load document for LLM knowledge
-    # retriever = store_knowledge()
-    # rag_chain = get_rag_chain(llm, retriever)
-    # chatbot = get_conversational_rag_chain(rag_chain=rag_chain)
 
     for chatbot_name in list_of_chatbot_name:
         retriever[chatbot_name] = load_retriever(chatbot_name)
@@ -101,32 +98,32 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/isready")
-def is_ready():
-    if (chatbot is not None):
+# ========================================================================
+# GET request to check if chatbot is ready
+# ========================================================================
+
+@app.get("/isready/{chatbot_name}")
+def is_ready(chatbot_name: str):
+    if (chatbot[chatbot_name] is not None):
         return {"message": "Chatbot is ready :)"}
      
     return {"message": "Chatbot is not ready :("}
 
+# ========================================================================
+# POST request for first query and it will return generated session id
+# ========================================================================
+
 @app.post("/start-chat/{chatbot_name}")
-async def start_chat(chatbot_name: str, customerData: CustomerData):
+async def start_chat(chatbot_name: str, query: QueryObject):
     global session_counter
     if (chatbot[chatbot_name] is None):
         return {"message": "Chatbot is not ready :("}
-    
-    extracted_xml = extract_xml(customerData.brn)
-    if extracted_xml is None:
-        return {"response": "BRN number does not have the CTOS data"}
-
-    ctos_data = json.dumps(extracted_xml)
-    
-    question = 'Can you suggest up to 3 product(s) with this data: ' + ctos_data
 
     generated_session_id = "session_" + str(session_counter)
     session_counter += 1
     
     query = chatbot[chatbot_name].invoke(
-        {"input": question},
+        {"input": query.query},
         config={
             "configurable": {"session_id": generated_session_id}
         },  # constructs a key "abc123" in `store`.
@@ -136,7 +133,9 @@ async def start_chat(chatbot_name: str, customerData: CustomerData):
 
     return query
 
-
+# ========================================================================
+# POST request for continuing conversation. Should supply session id
+# ========================================================================
 @app.post("/chat/{chatbot_name}")
 async def on_chat(chatbot_name: str, query_obj: QueryObject):
     print(f"STORE: {store}")
@@ -154,6 +153,9 @@ async def on_chat(chatbot_name: str, query_obj: QueryObject):
 
 UPLOAD_DIRECTORY = "knowledge_base_dir"
 
+# ========================================================================
+# POST request for saving/creating chatbots in the back office
+# ========================================================================
 @app.post("/{chatbot_name}/save")
 async def save_chatbot_settings(chatbot_name: str, chatbot_title: str = Form(...), answerMethod: str = Form(...), files: List[UploadFile] = File(...)):
     # uploading documents
@@ -171,6 +173,9 @@ async def save_chatbot_settings(chatbot_name: str, chatbot_title: str = Form(...
 
     return {"info": f"{len(files)} files successfully uploaded!", "files": file_locations}
 
+# ========================================================================
+# GET request to get list of all chatbots
+# ========================================================================
 @app.get("/chatbots")
 def get_all_chatbots():
     return chatbots

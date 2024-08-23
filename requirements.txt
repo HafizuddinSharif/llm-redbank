@@ -1,7 +1,15 @@
 langchain 
 langchain_community 
+xmltodict
+unstructured
+fastapi
+langchain
+pydantic
+langchain_community
+bs4
 langchain_chroma
 langchain_ollama
-xmltodict
-fastapi
-unstructured
+python-multipart
+uvicorn
+
+# pip install "unstructured[md]" "unstructured[pdf]"
