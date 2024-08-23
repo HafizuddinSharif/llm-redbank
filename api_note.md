@@ -81,3 +81,45 @@ To continue chatting with the chatbot. POST "/start-chat/{chatbot_name}" should 
     "answer": "..."
 }
 ```
+
+## POST "/send-brn"
+
+FE to send-brn to BE to create the session
+
+**request:**
+
+```
+{
+    "brn":"1408874K"
+}
+```
+
+**response:**
+
+```
+[
+    "session created with session_id: d8709baa-dd5d-4082-941a-df623da4051a"
+]
+```
+
+
+## POST "/askMe"
+
+FE to send query with session_id
+
+**request:**
+
+```
+{
+    "query": "what is the total revenue, profit before tax and total asset for this data?",
+    "session_id": "9236bb6e-953f-459a-a08b-db8c478dbadd"
+}
+```
+
+**response:**
+
+```
+[
+    "askMe successful"
+]
+```

@@ -174,3 +174,8 @@ async def save_chatbot_settings(chatbot_name: str, chatbot_title: str = Form(...
 @app.get("/chatbots")
 def get_all_chatbots():
     return chatbots
+
+def createSession(brn, session_id):
+    print("call createSession API with brn:" + brn + ", and session_id: " + session_id)
+
+    return{"createSession OK"}

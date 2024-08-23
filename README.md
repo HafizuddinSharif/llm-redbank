@@ -50,3 +50,15 @@ INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     127.0.0.1:59516 - "GET /isready HTTP/1.1" 200 OK
 ##
+
+2. Start the preprocessing server at different port - uvicorn preprocessing:app --reload --port 8181
+
+##
+PS D:\CIMB\Hackathon\octoadvisor\llm-redbank> uvicorn preprocessing:app --reload --port 8181
+INFO:     Will watch for changes in these directories: ['D:\\CIMB\\Hackathon\\octoadvisor\\llm-redbank']
+INFO:     Uvicorn running on http://127.0.0.1:8181 (Press CTRL+C to quit)
+INFO:     Started reloader process [23056] using WatchFiles
+INFO:     Started server process [5468]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+##
