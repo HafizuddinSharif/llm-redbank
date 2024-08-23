@@ -29,7 +29,7 @@ def send_brn_start_conversation(customerData: CustomerData):
 
 
 @app.post("/askMe")
-def askMe(query_txt: Query, ):
+def askMe(query_txt: Query):
     # Add logic here
     print("calling askMe with: " + query_txt.query + " with session_id: " + query_txt.session_id)
 

@@ -53,10 +53,6 @@ class QueryObject(BaseModel):
 class CustomerData(BaseModel):
     brn: str
 
-class SessionData(BaseModel):
-    brn: str
-    session_id: str
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global retriever, chatbot
