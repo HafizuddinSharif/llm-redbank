@@ -25,7 +25,7 @@ def send_brn_start_conversation(customerData: CustomerData):
     # create user session at mainBot
     createSession(customerData.brn, currentUUID)
 
-    return currentUUID
+    return {"session created with session_id: " + currentUUID}
 
 
 @app.post("/askMe")
