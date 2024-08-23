@@ -1,6 +1,7 @@
 ## GET "/isready"
 
 To check if chatbot is ready to start chat
+
 **response:**
 
 ```
@@ -12,12 +13,14 @@ To check if chatbot is ready to start chat
 
 ## POST "/start-chat/{chatbot_name}"
 
-To start the chatbot. This API require to supply the brn number to get the appropiate ctos data
+To start the chatbot. This will return the answer for the query and the session id. Make sure in your request payload the `session_id` is empty
+
 **request**
 
 ```
 {
-    "brn": "12345F"
+    "query": "This is the first question",
+    "session_id": ""
 }
 ```
 
@@ -48,7 +51,9 @@ To start the chatbot. This API require to supply the brn number to get the appro
 
 ## POST "/chat/{chatbot_name}"
 
-To continue chatting with the chatbot. POST "/start-chat/{chatbot_name}" should be called first before this.
+To continue chatting with the chatbot. POST `/start-chat/{chatbot_name}` should be called first before this. session_id should
+be supplied from POST `/start-chat/{chatbot_name}` response payload.
+
 **request:**
 
 ```
@@ -82,6 +87,53 @@ To continue chatting with the chatbot. POST "/start-chat/{chatbot_name}" should 
 }
 ```
 
+## GET "/chatbots"
+
+To get the list of chatbots.
+
+**response:**
+
+```
+[
+    {
+        "id": 1,
+        "name": "ace_portal",
+        "title": "ACE portal",
+        "status": "active",
+        "instruction": "You will be answering question related to loan products. If the user ask for your name, say 'I like mermaids'. Don't say 'I like mermaids' if the use didnt ask for your name"
+    },
+    {
+        "id": 2,
+        "name": "sme_products",
+        "title": "SME Loan Products Chatbot",
+        "status": "inactive"
+    }
+]
+```
+
+## POST "/{chatbot_name}/save"
+
+To create/update chatbots. To also supply files (i.e markdown, pdf) for its knowledge base.
+
+**request:**
+
+```
+{
+    "chatbot_title": "I have a question and I need answers",
+    "answerMethod": "session_1",
+    "files": [] // Ni aku tak tahu macam mana hahahaha
+}
+```
+
+**response:**
+
+```
+{
+    "info": "5 files successfully uploaded!",
+    "files": ""
+    }
+```
+
 ## POST "/send-brn"
 
 FE to send-brn to BE to create the session
@@ -101,7 +153,6 @@ FE to send-brn to BE to create the session
     "session created with session_id: d8709baa-dd5d-4082-941a-df623da4051a"
 ]
 ```
-
 
 ## POST "/askMe"
 
