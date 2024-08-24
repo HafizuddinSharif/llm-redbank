@@ -1,4 +1,5 @@
 from typing import List
+import uuid
 from fastapi import FastAPI, Form, File, UploadFile
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
@@ -178,7 +179,13 @@ def get_all_chatbots():
 def get_all_chatbots(chatbot_name: str):
     return chatbots.get(chatbot_name)
 
-def createSession(brn, session_id):
-    print("call createSession API with brn:" + brn + ", and session_id: " + session_id)
+# ========================================================================
+# GET request to get session ID with a specific chatbot
+# ========================================================================
+@app.get("/start-session/{chatbot_name}")
+def create_session(chatbot_name: str):
+    # generate uuid
+    session_id = str(uuid.uuid4())
+    print("call create_session API with session_id: " + session_id)
 
-    return{"createSession OK"}
+    return{ "session_id": session_id }

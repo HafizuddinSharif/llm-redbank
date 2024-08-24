@@ -163,6 +163,19 @@ To create/update chatbots. To also supply files (i.e markdown, pdf) for its know
     }
 ```
 
+## GET "/start-session/{chatbot_name}"
+
+To get session ID with a specific chatbot
+
+**response:**
+
+```
+{
+    "session_id": "af234sd-1234321sdsw-2sdas",
+}
+
+```
+
 ## POST "/send-brn"
 
 FE to send-brn to BE to create the session
