@@ -3,73 +3,62 @@ from fastapi import FastAPI, Form, File, UploadFile
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 from contextlib import asynccontextmanager
-from chatbot import store_knowledge, get_rag_chain, get_llm_model, upload_documents, load_retriever
+from chatbot import store_knowledge, get_rag_chain, get_llm_model, upload_documents, load_retriever, get_list_documents
 from langchain_core.runnables.history import RunnableWithMessageHistory
-from langchain_chroma import Chroma
-from pydantic import BaseModel
-from ctos_extractor import extract_xml
-import json
-import shutil
-from pathlib import Path
-import sys
-
 from fastapi.middleware.cors import CORSMiddleware
+from model import QueryObject
 
-from model import CustomerData, QueryObject
-
+# ========================================================================
+# Server state store here
+# ========================================================================
 store = {}
-retriever = {
-    "sme_products": None,
-    "ace_portal": None
-}
-rag_chain = {
-    "sme_products": None,
-    "ace_portal": None
-}
-chatbot = {
-    "sme_products": None,
-    "ace_portal": None
-}
-list_of_chatbot_name = ["sharif"]
-chatbots = [
-    {
+retriever = {}
+rag_chain = {}
+chatbot = {}
+session_counter = 1
+list_of_chatbot_name = ["sharif", "ace_portal"]
+chatbots = {
+    "sharif": {
         "id": 1,
+        "name": "sharif",
+        "title": "Sharif Chatbot",
+        "status": "active",
+        "instruction": "You are Hafizuddin Sharif Bin Umar Sharif. You are going to answer the the user question like you are him."
+    },
+    "ace_portal": {
+        "id": 2,
         "name": "ace_portal",
         "title": "ACE portal",
         "status": "inactive",
         "instruction": "You will be answering question related to loan products. If the user ask for your name, say 'I like mermaids'. Don't say 'I like mermaids' if the use didnt ask for your name"
-    },
-    {
-        "id": 2,
-        "name": "sme_products",
-        "title": "SME Loan Products Chatbot",
-        "status": "inactive"
-    },
-    {
-        "id": 3,
-        "name": "sharif",
-        "title": "Sharif Chatbot",
-        "status": "active"
-    },
-]
-session_counter = 1
+    }
+}
 
+# ========================================================================
+# Server configuration(s)
+# ========================================================================
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    global retriever, chatbot
     # Get LLM model
     print(f"Fetching model...")
     llm = get_llm_model()
-
     for chatbot_name in list_of_chatbot_name:
-        retriever[chatbot_name] = load_retriever(chatbot_name)
-        rag_chain[chatbot_name] = get_rag_chain(llm, retriever[chatbot_name], chatbots[0]["instruction"])
-        chatbot[chatbot_name] = get_conversational_rag_chain(rag_chain=rag_chain[chatbot_name])
-
+        setup_chatbot(chatbot_name=chatbot_name, llm=llm)
     yield
-    # Clean up
-    # retriever.delete_collection()
 
+app = FastAPI(lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:4200"],  # Angular default URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# ========================================================================
+# Helper functions
+# ========================================================================
 def get_session_history(session_id: str) -> BaseChatMessageHistory:
         global store
         if session_id not in store:
@@ -88,15 +77,11 @@ def get_conversational_rag_chain(rag_chain):
 
     return conversational_rag_chain
 
-app = FastAPI(lifespan=lifespan)
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:4200"],  # Angular default URL
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+def setup_chatbot(chatbot_name, llm):
+    global retriever, chatbot
+    retriever[chatbot_name] = load_retriever(chatbot_name)
+    rag_chain[chatbot_name] = get_rag_chain(llm, retriever[chatbot_name], chatbots[chatbot_name]["instruction"])
+    chatbot[chatbot_name] = get_conversational_rag_chain(rag_chain=rag_chain[chatbot_name])
 
 # ========================================================================
 # GET request to check if chatbot is ready
@@ -138,7 +123,6 @@ async def start_chat(chatbot_name: str, query: QueryObject):
 # ========================================================================
 @app.post("/chat/{chatbot_name}")
 async def on_chat(chatbot_name: str, query_obj: QueryObject):
-    print(f"STORE: {store}")
     if not bool(store):
         return {"message": "No chat session started yet :("}
      
@@ -151,8 +135,6 @@ async def on_chat(chatbot_name: str, query_obj: QueryObject):
 
     return query
 
-UPLOAD_DIRECTORY = "knowledge_base_dir"
-
 # ========================================================================
 # POST request for saving/creating chatbots in the back office
 # ========================================================================
@@ -162,14 +144,16 @@ async def save_chatbot_settings(chatbot_name: str, chatbot_title: str = Form(...
     file_locations = upload_documents(chatbot_name=chatbot_name, answerMethod=answerMethod, files=files)
     store_knowledge(chatbot_name=chatbot_name)
 
-    chatbots.append({
-        "id": len(chatbots) + 1,
+    # Saved/updated chatbot details
+    chatbots[chatbot_name] = {
+        "id": chatbots[chatbot_name]["id"] if chatbots.get(chatbot_name) != None else len(chatbots) + 1,
         "name": chatbot_name,
         "title": chatbot_title,
         "status": "active",
         "instruction": answerMethod
-
-    })
+    }
+    # Setup the saved/updated chatbot
+    setup_chatbot(chatbot_name=chatbot_name, llm=get_llm_model())
 
     return {"info": f"{len(files)} files successfully uploaded!", "files": file_locations}
 
@@ -178,7 +162,21 @@ async def save_chatbot_settings(chatbot_name: str, chatbot_title: str = Form(...
 # ========================================================================
 @app.get("/chatbots")
 def get_all_chatbots():
-    return chatbots
+    chatbots_list = list(chatbots.values())
+
+    # To transform chatbots dict to list
+    for bot in chatbots_list:
+        print(bot.get("name"))
+        bot["files"] = get_list_documents(bot.get("name"))
+
+    return chatbots_list
+
+# ========================================================================
+# GET request to get a specific chatbot details
+# ========================================================================
+@app.get("/chatbots/{chatbot_name}")
+def get_all_chatbots(chatbot_name: str):
+    return chatbots.get(chatbot_name)
 
 def createSession(brn, session_id):
     print("call createSession API with brn:" + brn + ", and session_id: " + session_id)
