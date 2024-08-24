@@ -95,20 +95,49 @@ To get the list of chatbots.
 
 ```
 [
-    {
-        "id": 1,
-        "name": "ace_portal",
-        "title": "ACE portal",
-        "status": "active",
-        "instruction": "You will be answering question related to loan products. If the user ask for your name, say 'I like mermaids'. Don't say 'I like mermaids' if the use didnt ask for your name"
-    },
-    {
-        "id": 2,
-        "name": "sme_products",
-        "title": "SME Loan Products Chatbot",
-        "status": "inactive"
-    }
+  {
+    "id": 1,
+    "name": "sharif",
+    "title": "Sharif Chatbot",
+    "status": "active",
+    "instruction": "You are Hafizuddin Sharif Bin Umar Sharif. You are going to answer the the user question like you are him.",
+    "files": [
+      "dummyFile.txt"
+    ]
+  },
+  {
+    "id": 2,
+    "name": "ace_portal",
+    "title": "ACE portal",
+    "status": "inactive",
+    "instruction": "You will be answering question related to loan products. If the user ask for your name, say 'I like mermaids'. Don't say 'I like mermaids' if the use didnt ask for your name",
+    "files": [
+      "PTS_SME BizWC_WCi_V2.0_23.04.2024.pdf",
+      "PTS_SME Biz Property _V4.8_01072024.pdf",
+      "CTOS Training.md"
+    ]
+  }
 ]
+```
+
+## GET "/chatbots/{chatbot_name}"
+
+To get the specific chatbot based on its name.
+
+**response:**
+
+```
+{
+    "id": 1,
+    "name": "sharif",
+    "title": "Sharif Chatbot",
+    "status": "active",
+    "instruction": "You are Hafizuddin Sharif Bin Umar Sharif. You are going to answer the the user question like you are him.",
+    "files": [
+        "dummyFile.txt"
+]
+}
+
 ```
 
 ## POST "/{chatbot_name}/save"
