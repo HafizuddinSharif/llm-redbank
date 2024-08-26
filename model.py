@@ -6,3 +6,6 @@ class QueryObject(BaseModel):
 
 class CustomerData(BaseModel):
     brn: str
+
+class Filename(BaseModel):
+    filename: str
