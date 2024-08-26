@@ -1,5 +1,6 @@
 import os
 from typing import List
+from fastapi.responses import FileResponse
 from langchain_community.document_loaders import DirectoryLoader
 from langchain_chroma import Chroma
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -165,6 +166,31 @@ def get_rag_chain(llm, retriever, instructions):
 
     rag_chain = create_retrieval_chain(history_aware_retriever, question_answer_chain)
     return rag_chain
+
+def delete_file(chatbot_name: str, filename: str):
+    return_message = ""
+    try:
+        # Construct the full file path
+        file_path = os.path.join(f"{UPLOADED_FILE_PATH}/{chatbot_name}", filename)
+        
+        # Check if the file exists
+        if os.path.isfile(file_path):
+            os.remove(file_path)
+            return_message = f"Deleted file: {file_path}"
+        else:
+            return_message = f"The file '{filename}' does not exist in the directory '{chatbot_name}'."
+        
+    except Exception as e:
+        return_message = f"An error occurred: {e}"
+    
+    print(return_message)
+    return return_message
+
+def get_file(chatbot_name: str, filename: str):
+    file_path = os.path.join(f"{UPLOADED_FILE_PATH}/{chatbot_name}", filename)
+    if os.path.exists(file_path):
+        return FileResponse(file_path)
+    return f"File '{file_path}' cannot be found. It's either the file does not exist or the chatbot name does not exist."
 
 def get_llm_model():
      return ChatOllama(

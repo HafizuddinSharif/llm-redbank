@@ -140,9 +140,9 @@ To get the specific chatbot based on its name.
 
 ```
 
-## POST "/{chatbot_name}/save"
+## POST "/create-chatbot"
 
-To create/update chatbots. To also supply files (i.e markdown, pdf) for its knowledge base.
+To create chatbots. To also supply files (i.e markdown, pdf) for its knowledge base.
 
 **request:**
 
@@ -216,4 +216,67 @@ FE to send query with session_id
 [
     "askMe successful"
 ]
+```
+
+## PUT "/{chatbot_name}/save"
+
+To update the existing chatbot configuration.
+
+**request:**
+
+```
+{
+    "chatbot_title": "I have a question and I need answers",
+    "answerMethod": "session_1",
+    "status": "active" // ["active", "inactive"]
+    "files": [] // Ni aku tak tahu macam mana hahahaha
+}
+```
+
+**response:**
+
+```
+{
+    "info": "5 files successfully uploaded!",
+    "files": ""
+    }
+```
+
+## GET "/{chatbot_name}/file"
+
+To view/download file in a chatbot knowledge base
+
+**request:**
+
+```
+{
+    "filename": "filename.txt"
+}
+```
+
+**response:**
+
+```
+Binary file (boleh test tak on your end apa kau dapat)
+```
+
+## DELETE "/{chatbot_name}/delete-file"
+
+To delete file in a chatbot knowledge base
+
+**request:**
+
+```
+{
+    "filename": "filename.txt"
+}
+```
+
+**response:**
+
+```
+{
+  "success": true,
+  "message": "Deleted file: uploaded_dir/ace_portal/filename.txt"
+}
 ```

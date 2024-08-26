@@ -1,13 +1,14 @@
 from typing import List
 import uuid
 from fastapi import FastAPI, Form, File, UploadFile
+from fastapi.responses import FileResponse
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 from contextlib import asynccontextmanager
-from chatbot import store_knowledge, get_rag_chain, get_llm_model, upload_documents, load_retriever, get_list_documents
+from chatbot import get_file, store_knowledge, get_rag_chain, get_llm_model, upload_documents, load_retriever, get_list_documents, delete_file
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from fastapi.middleware.cors import CORSMiddleware
-from model import QueryObject
+from model import Filename, QueryObject
 
 # ========================================================================
 # Server state store here
@@ -137,10 +138,13 @@ async def on_chat(chatbot_name: str, query_obj: QueryObject):
     return query
 
 # ========================================================================
-# POST request for saving/creating chatbots in the back office
+# POST request for creating chatbots in the back office
 # ========================================================================
-@app.post("/{chatbot_name}/save")
-async def save_chatbot_settings(chatbot_name: str, chatbot_title: str = Form(...), answerMethod: str = Form(...), status: str = Form(...), files: List[UploadFile] = File(...)):
+@app.post("/create-chatbot")
+async def save_chatbot_settings(chatbot_title: str = Form(...), answerMethod: str = Form(...), status: str = Form(...), files: List[UploadFile] = File(...)):
+    # Set the name of the chatbot from the chatbot_title input
+    chatbot_name = chatbot_title.replace(' ', '_').lower()
+
     # uploading documents
     file_locations = upload_documents(chatbot_name=chatbot_name, answerMethod=answerMethod, files=files)
     store_knowledge(chatbot_name=chatbot_name)
@@ -176,8 +180,10 @@ def get_all_chatbots():
 # GET request to get a specific chatbot details
 # ========================================================================
 @app.get("/chatbots/{chatbot_name}")
-def get_all_chatbots(chatbot_name: str):
-    return chatbots.get(chatbot_name)
+def get_one_chatbot(chatbot_name: str):
+    bot = chatbots.get(chatbot_name)
+    bot["files"] = get_list_documents(bot.get("name"))
+    return bot
 
 # ========================================================================
 # GET request to get session ID with a specific chatbot
@@ -189,3 +195,47 @@ def create_session(chatbot_name: str):
     print("call create_session API with session_id: " + session_id)
 
     return{ "session_id": session_id }
+
+@app.get("/download-pdf")
+def download_pdf():
+    file_path = "./uploaded_dir/sharif/dummyFile.txt"  # Replace with the actual path to the text file
+    return FileResponse(file_path, media_type='text/plain', filename="downloaded_file.txt")
+
+# ========================================================================
+# PUT request for updating chatbots in the back office
+# ========================================================================
+@app.put("/{chatbot_name}/save")
+async def save_chatbot_settings(chatbot_name: str, chatbot_title: str = Form(...), answerMethod: str = Form(...), status: str = Form(...), files: List[UploadFile] = File(...)):
+    # uploading documents
+    file_locations = upload_documents(chatbot_name=chatbot_name, answerMethod=answerMethod, files=files)
+    store_knowledge(chatbot_name=chatbot_name)
+
+    # Saved/updated chatbot details
+    chatbots[chatbot_name] = {
+        "id": chatbots[chatbot_name]["id"] if chatbots.get(chatbot_name) != None else len(chatbots) + 1,
+        "name": chatbot_name,
+        "title": chatbot_title,
+        "status": status,
+        "instruction": answerMethod
+    }
+    # Setup the saved/updated chatbot
+    setup_chatbot(chatbot_name=chatbot_name, llm=get_llm_model())
+
+    return {"info": f"{len(files)} files successfully uploaded!", "files": file_locations}
+
+
+# ========================================================================
+# DELETE request to delete a file based on given filename
+# ========================================================================
+@app.delete("/{chatbot_name}/delete-file")
+async def delete_file_given_filename(chatbot_name: str, filename: Filename):
+    response = delete_file(chatbot_name=chatbot_name, filename=filename.filename)
+    return {"success": True, "message": response}
+
+# ========================================================================
+# GET request to view/download a file
+# ========================================================================
+@app.get("/{chatbot_name}/file/{filename}")
+async def get_filen_given_filename(chatbot_name: str, filename: str):
+    response = get_file(chatbot_name=chatbot_name, filename=filename)
+    return response
