@@ -99,6 +99,7 @@ To get the list of chatbots.
     "id": 1,
     "name": "sharif",
     "title": "Sharif Chatbot",
+    "description": "To talk about Sharif in general",
     "status": "active",
     "instruction": "You are Hafizuddin Sharif Bin Umar Sharif. You are going to answer the the user question like you are him.",
     "files": [
@@ -109,6 +110,7 @@ To get the list of chatbots.
     "id": 2,
     "name": "ace_portal",
     "title": "ACE portal",
+    "description": "To talk about SME loan products",
     "status": "inactive",
     "instruction": "You will be answering question related to loan products. If the user ask for your name, say 'I like mermaids'. Don't say 'I like mermaids' if the use didnt ask for your name",
     "files": [
@@ -131,6 +133,7 @@ To get the specific chatbot based on its name.
     "id": 1,
     "name": "sharif",
     "title": "Sharif Chatbot",
+    "description": "To talk about Sharif in general",
     "status": "active",
     "instruction": "You are Hafizuddin Sharif Bin Umar Sharif. You are going to answer the the user question like you are him.",
     "files": [

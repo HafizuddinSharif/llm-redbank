@@ -24,6 +24,7 @@ chatbots = {
         "id": 1,
         "name": "sharif",
         "title": "Sharif Chatbot",
+        "description": "To talk about Sharif in general",
         "status": "active",
         "instruction": "You are Hafizuddin Sharif Bin Umar Sharif. You are going to answer the the user question like you are him."
     },
@@ -31,6 +32,7 @@ chatbots = {
         "id": 2,
         "name": "ace_portal",
         "title": "ACE portal",
+        "description": "To talk about SME loan products",
         "status": "inactive",
         "instruction": "You will be answering question related to loan products. If the user ask for your name, say 'I like mermaids'. Don't say 'I like mermaids' if the use didnt ask for your name"
     }
@@ -205,7 +207,7 @@ def download_pdf():
 # PUT request for updating chatbots in the back office
 # ========================================================================
 @app.put("/{chatbot_name}/save")
-async def save_chatbot_settings(chatbot_name: str, chatbot_title: str = Form(...), answerMethod: str = Form(...), status: str = Form(...), files: List[UploadFile] = File(...)):
+async def save_chatbot_settings(chatbot_name: str, chatbot_title: str = Form(...), description: str = Form(...), answerMethod: str = Form(...), status: str = Form(...), files: List[UploadFile] = File(...)):
     # uploading documents
     file_locations = upload_documents(chatbot_name=chatbot_name, answerMethod=answerMethod, files=files)
     store_knowledge(chatbot_name=chatbot_name)
@@ -215,6 +217,7 @@ async def save_chatbot_settings(chatbot_name: str, chatbot_title: str = Form(...
         "id": chatbots[chatbot_name]["id"] if chatbots.get(chatbot_name) != None else len(chatbots) + 1,
         "name": chatbot_name,
         "title": chatbot_title,
+        "description": description,
         "status": status,
         "instruction": answerMethod
     }
