@@ -67,6 +67,10 @@ def store_knowledge(chatbot_name):
     # Initialize the vector store, loading from the persisted directory if it exists
     persist_directory = f"{CHROMA_ROOT_PATH}/{chatbot_name}"
 
+    # Create the store db if it doesn't exist
+    Path(f"{CHROMA_ROOT_PATH}").mkdir(exist_ok=True)
+    Path(f"{CHROMA_ROOT_PATH}/{chatbot_name}").mkdir(exist_ok=True)
+
     # Load documents and tag them with the group
     docs = load_documents(chatbot_name=chatbot_name)
 

@@ -140,7 +140,7 @@ async def on_chat(chatbot_name: str, query_obj: QueryObject):
 # POST request for saving/creating chatbots in the back office
 # ========================================================================
 @app.post("/{chatbot_name}/save")
-async def save_chatbot_settings(chatbot_name: str, chatbot_title: str = Form(...), answerMethod: str = Form(...), files: List[UploadFile] = File(...)):
+async def save_chatbot_settings(chatbot_name: str, chatbot_title: str = Form(...), answerMethod: str = Form(...), status: str = Form(...), files: List[UploadFile] = File(...)):
     # uploading documents
     file_locations = upload_documents(chatbot_name=chatbot_name, answerMethod=answerMethod, files=files)
     store_knowledge(chatbot_name=chatbot_name)
@@ -150,7 +150,7 @@ async def save_chatbot_settings(chatbot_name: str, chatbot_title: str = Form(...
         "id": chatbots[chatbot_name]["id"] if chatbots.get(chatbot_name) != None else len(chatbots) + 1,
         "name": chatbot_name,
         "title": chatbot_title,
-        "status": "active",
+        "status": status,
         "instruction": answerMethod
     }
     # Setup the saved/updated chatbot
