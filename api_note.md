@@ -242,17 +242,9 @@ To update the existing chatbot configuration.
     }
 ```
 
-## GET "/{chatbot_name}/file"
+## GET "/{chatbot_name}/file/{filename}"
 
 To view/download file in a chatbot knowledge base
-
-**request:**
-
-```
-{
-    "filename": "filename.txt"
-}
-```
 
 **response:**
 
