@@ -150,6 +150,7 @@ To create/update chatbots. To also supply files (i.e markdown, pdf) for its know
 {
     "chatbot_title": "I have a question and I need answers",
     "answerMethod": "session_1",
+    "status": "active" // ["active", "inactive"]
     "files": [] // Ni aku tak tahu macam mana hahahaha
 }
 ```
