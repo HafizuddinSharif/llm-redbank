@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from ctos_extractor import *
 from main import *
 import uuid
 import requests
+import json
 
 class Query(BaseModel):
     query: str
@@ -11,7 +13,11 @@ class Query(BaseModel):
 class CustomerData(BaseModel):
     brn: str
 
+# to store key value brn:ctosData
 brnDict = {}
+
+# store sessionId into list
+sessionIdList = []
 
 app = FastAPI()
 
@@ -19,28 +25,33 @@ app = FastAPI()
 def testData():
     getBrnData("1408874")
     getBrnData("1408888")
+    printAllSession()
 
     return{"testData completed"}
 
 @app.post("/send-brn")
 def send_brn_start_conversation(customerData: CustomerData):
-    # Add logic here
     print("send-brn with brn: " + customerData.brn)
 
-    # generate uuid
-    currentUUID = str(uuid.uuid4())
+    ## call main API /start-session/{chatbot_name} to get sessionId
+    url = 'http://127.0.0.1:8000/start-session/sharif'
+    response = requests.get(url)
+    currentSessionId = response.text.replace('"', '')
+    print("Your sessionId: " + currentSessionId)
 
-    ## TODO: call main API /start-session/{chatbot_name} to get sessionId
-    '''
-        duplicate askMe logic to here
-    '''
+    # check if sessionId exist, else update sessionIdList
+    if currentSessionId in sessionIdList:
+        print("session EXIST.")
+    else:
+        sessionIdList.append(currentSessionId)
+        print("add sessionId: " + currentSessionId + " into list")
 
-    #print("Your sessionId: " + currentUUID)
+    print(sessionIdList)
 
-    # create user session at mainBot
-    processing_ctos_data(customerData.brn, currentUUID)
+    # create brnDict to store brn data
+    processing_ctos_data(customerData.brn, currentSessionId)
 
-    return {"session created with session_id: " + currentUUID}
+    return {"session created with session_id: " + currentSessionId}
 
 
 @app.post("/askMe")
@@ -50,8 +61,37 @@ def askMe(query_txt: Query):
 
     # send question to mainBot
 
-    ################################
+    ## TODO
     # check if session id exist, if exist, call /chat, if not exist call /sharif
+    if findSession(query_txt.session_id):
+        # call /chat/{chatbot_name}
+        print("session exist, call chat")
+
+        url = 'http://127.0.0.1:8000/chat/sharif'
+        data = {"query": query_txt.query, "session_id": query_txt.session_id}
+        response = requests.post(url, json=data)
+        print(response.text)
+    else:
+        # call start-session, call /chat/{chatbot_name}
+        print("session does not exist, start-session followed up by chat")
+
+        ## call main API /start-session/{chatbot_name} to get sessionId
+        url = 'http://127.0.0.1:8000/start-session/sharif'
+        response = requests.get(url)
+        currentSessionId = response.text.replace('"', '')
+        print("Your sessionId: " + currentSessionId)
+
+        # check if sessionId exist, else update sessionIdList
+        if currentSessionId in sessionIdList:
+            print("session EXIST.")
+        else:
+            sessionIdList.append(currentSessionId)
+            print("add sessionId: " + currentSessionId + " into list")
+
+        url = 'http://127.0.0.1:8000/chat/sharif'
+        data = {"query": query_txt.query, "session_id": query_txt.session_id}
+        response = requests.post(url, json=data)
+        print(response.text)
 
     ## TODO: call /chat/{chatbot_name}
     '''
@@ -66,13 +106,6 @@ def askMe(query_txt: Query):
         "session_id": "XXXXXX-XXXXXX-XXXXXX"
     }
     '''
-
-    # check also if bot is ready before calling url below
-    url = 'http://127.0.0.1:8000/start-chat/sharif'
-    data = {"brn": "1408874K"}
-    response = requests.post(url, json=data)
-    print(response.text)
-    #start_chat("sharif", CustomerData)
 
     return {"askMe successful"}
 
@@ -104,5 +137,17 @@ def getBrnData(brn):
 
     print("=======================")
     print(currentBrnData)
+
+# to find sessionId supplied against the current sessionIdList
+def findSession(sessionId):
+    if sessionId in sessionIdList:
+        print("found sessionId: " + sessionId)
+        return True
+    else:
+        print("NOT found sessionId: " + sessionId)
+        return False
+    
+def printAllSession():
+    print(sessionIdList)
 
 ## TODO: API for suggested bubble - redflags, 
