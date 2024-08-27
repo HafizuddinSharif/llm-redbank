@@ -198,7 +198,7 @@ def create_session(chatbot_name: str):
     session_list.append(session_id)
     print("call create_session API with session_id: " + session_id)
 
-    return{ "session_id": session_id }
+    return(session_id)
 
 @app.get("/download-pdf")
 def download_pdf():
