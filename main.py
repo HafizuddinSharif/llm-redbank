@@ -14,6 +14,7 @@ from model import Filename, QueryObject
 # Server state store here
 # ========================================================================
 store = {}
+session_list = []
 retriever = {}
 rag_chain = {}
 chatbot = {}
@@ -127,7 +128,7 @@ async def start_chat(chatbot_name: str, query: QueryObject):
 # ========================================================================
 @app.post("/chat/{chatbot_name}")
 async def on_chat(chatbot_name: str, query_obj: QueryObject):
-    if not bool(store):
+    if query_obj.session_id not in session_list:
         return {"message": "No chat session started yet :("}
      
     query = chatbot[chatbot_name].invoke(
@@ -194,6 +195,7 @@ def get_one_chatbot(chatbot_name: str):
 def create_session(chatbot_name: str):
     # generate uuid
     session_id = str(uuid.uuid4())
+    session_list.append(session_id)
     print("call create_session API with session_id: " + session_id)
 
     return{ "session_id": session_id }
