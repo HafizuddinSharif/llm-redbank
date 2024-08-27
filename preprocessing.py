@@ -81,7 +81,7 @@ def askMe(query_txt: Query):
         response = requests.post(url, json=data)
 
         post_response_json = response.json()
-        print("post response json: ")
+        #print("post response json: ")
         print(post_response_json["answer"])
 
         #print(response.text)
