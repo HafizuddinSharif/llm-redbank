@@ -54,7 +54,7 @@ def send_brn_start_conversation(customerData: CustomerData):
     # create brnDict to store brn data
     processing_ctos_data(customerData.brn, currentSessionId)
 
-    return {"session created with session_id: " + currentSessionId}
+    return {"session_id":currentSessionId}
 
 
 @app.post("/askMe")

@@ -68,3 +68,34 @@ INFO: Application startup complete.
 INFO: 127.0.0.1:59516 - "GET /isready HTTP/1.1" 200 OK
 
 ##
+
+
+
+## To test preprocessing from postman
+1. Test if chatbot is ready
+
+##
+curl --location 'http://127.0.0.1:8000/isready/sharif' \
+--data ''
+##
+
+2. Create a session via send-brn
+
+##
+curl --location 'http://127.0.0.1:8181/send-brn' \
+--header 'Content-Type: application/json' \
+--data '{
+    "brn":"1408874K"
+}'
+##
+
+3. copy the session-id from the send-brn response  and replace the requests payload in askMe
+
+##
+curl --location 'http://127.0.0.1:8181/askMe' \
+--header 'Content-Type: application/json' \
+--data '{
+    "query": "what is the total revenue in 2021, total revenue in 2020 and total revenue in 2022 and the sum of it for this data?",
+    "session_id": "afcd3ac1-72ab-4ad6-a13b-a506ab04a636"
+}'
+##
