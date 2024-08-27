@@ -64,9 +64,6 @@ def askMe(query_txt: Query):
 
     # send question to mainBot
 
-    ## TODO: given sessionId
-
-    ## TODO
     # check if session id exist, if exist, call /chat, if not exist call /sharif
     if findSession(query_txt.session_id):
         # call /chat/{chatbot_name}
