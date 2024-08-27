@@ -1,19 +1,13 @@
 import os
 from typing import List
-import bs4
-from langchain import hub
-from langchain_community.document_loaders import DirectoryLoader, UnstructuredPDFLoader
+from fastapi.responses import FileResponse
+from langchain_community.document_loaders import DirectoryLoader
 from langchain_chroma import Chroma
-from langchain_core.output_parsers import StrOutputParser
-from langchain_core.runnables import RunnablePassthrough
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_ollama import ChatOllama, OllamaEmbeddings
 from langchain.chains import create_history_aware_retriever, create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
-from langchain_community.chat_message_histories import ChatMessageHistory
-from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_core.runnables.history import RunnableWithMessageHistory
 from pathlib import Path
 from fastapi import File, Form, UploadFile
 import shutil
@@ -73,7 +67,10 @@ def store_knowledge_2(chatbot_name) -> Chroma:
 def store_knowledge(chatbot_name):
     # Initialize the vector store, loading from the persisted directory if it exists
     persist_directory = f"{CHROMA_ROOT_PATH}/{chatbot_name}"
-    duplicated = True
+
+    # Create the store db if it doesn't exist
+    Path(f"{CHROMA_ROOT_PATH}").mkdir(exist_ok=True)
+    Path(f"{CHROMA_ROOT_PATH}/{chatbot_name}").mkdir(exist_ok=True)
 
     # Load documents and tag them with the group
     docs = load_documents(chatbot_name=chatbot_name)
@@ -82,62 +79,56 @@ def store_knowledge(chatbot_name):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     splits = text_splitter.split_documents(docs)
 
-    # Check if it uploads the same documents
-    # if os.path.exists(persist_directory):
-    #     print("HERE NOW")
-    #     vectorstore = Chroma(persist_directory=persist_directory, embedding_function=OllamaEmbeddings(model="mxbai-embed-large"))
-    #     for split in splits:
-    #         if not is_document_stored(vectorstore, split):
-    #             logging.info(f"Document not found in vector store. Adding it...")
-    #             duplicated = False
-    #             break
-    
-    # if not duplicated:
-    #     logging.info("Duplicated file uploaded. No new knowledge is being stored...")
-    #     return
-    vectorstore = Chroma(persist_directory=persist_directory, embedding_function=OllamaEmbeddings(model="mxbai-embed-large"))
-    vectorstore.delete_collection()
+    # Refresh the knowledge base with existing and newly uploaded files
+    delete_old_knowledge_base_in_chroma(persist_directory)
 
-    # Create and persist the vector store with metadata
-    vectorstore = Chroma.from_documents(documents=splits, embedding=OllamaEmbeddings(model="mxbai-embed-large"), persist_directory=persist_directory)
+    vectorstore = Chroma(persist_directory=persist_directory, embedding_function=OllamaEmbeddings(model="mxbai-embed-large"))
+    vectorstore.reset_collection()
+    vectorstore.add_documents(splits)
     print("Finish storing knowledge...")
 
-def load_knowledge(chatbot_name) -> Chroma:
-    persist_directory = f"{CHROMA_ROOT_PATH}/{chatbot_name}"
-    if os.path.exists(persist_directory):
-        vectorstore = Chroma(persist_directory=persist_directory, embedding_function=OllamaEmbeddings(model="mxbai-embed-large"))
-        return vectorstore.as_retriever()
+def delete_old_knowledge_base_in_chroma(directory):
+    # This is the only file that should not be deleted
+    exception_file = 'chroma.sqlite3'
+    # Iterate through all files in the directory
+    for filename in os.listdir(directory):
+        file_path = os.path.join(directory, filename)
+
+        # If it's a directory, remove it and its contents
+        if os.path.isdir(file_path):
+            shutil.rmtree(file_path)
+            print(f"Deleted directory: {file_path}")
+        
+        # Check if it's a file (not a directory) and not the exception file
+        if os.path.isfile(file_path) and filename != exception_file:
+            os.remove(file_path)
+            print(f"Deleted: {file_path}")
     
 def load_retriever(chatbot_name):
     persist_directory = f"{CHROMA_ROOT_PATH}/{chatbot_name}"
     if os.path.exists(persist_directory):
         vectorstore = Chroma(persist_directory=persist_directory, embedding_function=OllamaEmbeddings(model="mxbai-embed-large"))
-        print(f"Found retriever for {chatbot_name}")
+        print(f"Document loaded for '{chatbot_name}':")
+        # To check what is the loaded knowledge base files for a chatbot
+        print_knowledge_base_files(vectorstore=vectorstore)
         return vectorstore.as_retriever(search_type="mmr", search_kwargs={"filter": {"group": chatbot_name}})
     
 def is_document_stored(vectorstore, key):
     result = vectorstore.similarity_search(key, k=1)
     return len(result) > 0
 
+def get_list_documents(chatbot_name) -> list:
+    directory = f"{UPLOADED_FILE_PATH}/{chatbot_name}"
+    documents = os.listdir(directory)
+    return documents
 
-# def get_session_history(session_id: str) -> BaseChatMessageHistory:
-#     global store
-#     if session_id not in store:
-#         store[session_id] = ChatMessageHistory()
-#     return store[session_id]
-
-# def get_conversational_rag_chain(rag_chain):
-#     ### Statefully manage chat history ###
-#     conversational_rag_chain = RunnableWithMessageHistory(
-#         rag_chain,
-#         get_session_history,
-#         input_messages_key="input",
-#         history_messages_key="chat_history",
-#         output_messages_key="answer",
-
-#     )
-
-#     return conversational_rag_chain
+def print_knowledge_base_files(vectorstore):
+    # Convert list of dictionaries to a set of tuples (to make them hashable)
+    unique_data_set = {tuple(sorted(item.items())) for item in vectorstore.get()["metadatas"]}
+    # Convert back to list of dictionaries
+    unique_data = [dict(item) for item in unique_data_set]
+    for yeet in unique_data:
+        print(yeet)
 
 def get_rag_chain(llm, retriever, instructions):
     ### Contextualize question ###
@@ -176,34 +167,34 @@ def get_rag_chain(llm, retriever, instructions):
     rag_chain = create_retrieval_chain(history_aware_retriever, question_answer_chain)
     return rag_chain
 
+def delete_file(chatbot_name: str, filename: str):
+    return_message = ""
+    try:
+        # Construct the full file path
+        file_path = os.path.join(f"{UPLOADED_FILE_PATH}/{chatbot_name}", filename)
+        
+        # Check if the file exists
+        if os.path.isfile(file_path):
+            os.remove(file_path)
+            return_message = f"Deleted file: {file_path}"
+        else:
+            return_message = f"The file '{filename}' does not exist in the directory '{chatbot_name}'."
+        
+    except Exception as e:
+        return_message = f"An error occurred: {e}"
+    
+    print(return_message)
+    return return_message
+
+def get_file(chatbot_name: str, filename: str):
+    file_path = os.path.join(f"{UPLOADED_FILE_PATH}/{chatbot_name}", filename)
+    if os.path.exists(file_path):
+        return FileResponse(file_path)
+    return f"File '{file_path}' cannot be found. It's either the file does not exist or the chatbot name does not exist."
+
 def get_llm_model():
      return ChatOllama(
         model="gemma2:2b",
         temperature=0,
         # other params...
     )
-     
-# def main():
-
-#     llm = get_llm_model()
-
-#     retriever = store_knowledge()
-#     rag_chain = get_rag_chain(llm=llm, retriever=retriever)
-#     conversational_rag_chain = get_conversational_rag_chain(rag_chain=rag_chain)
-
-#     query1 = conversational_rag_chain.invoke(
-#         {"input": "What is Task Decomposition?"},
-#         config={
-#             "configurable": {"session_id": "abc123"}
-#         },  # constructs a key "abc123" in `store`.
-#     )
-#     print(query1.get('answer'))
-
-#     query2 = conversational_rag_chain.invoke(
-#         {"input": "What are common ways of doing it?"},
-#         config={"configurable": {"session_id": "abc123"}},
-#     )
-#     print(query2.get('answer'))
-
-# if __name__ == "__main__":
-#     main()
