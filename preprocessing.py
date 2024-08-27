@@ -13,6 +13,9 @@ class Query(BaseModel):
 class CustomerData(BaseModel):
     brn: str
 
+class SessionId(BaseModel):
+    session_id: str
+
 # to store key value brn:ctosData
 brnDict = {}
 
@@ -22,9 +25,9 @@ sessionIdList = []
 app = FastAPI()
 
 @app.post("/testData")
-def testData():
-    getBrnData("1408874")
-    getBrnData("1408888")
+def testData(sessionId: SessionId):
+    getBrnData(sessionId.session_id)
+    #getBrnData("1408888")
     printAllSession()
 
     return{"testData completed"}
@@ -61,14 +64,21 @@ def askMe(query_txt: Query):
 
     # send question to mainBot
 
+    ## TODO: given sessionId
+
     ## TODO
     # check if session id exist, if exist, call /chat, if not exist call /sharif
     if findSession(query_txt.session_id):
         # call /chat/{chatbot_name}
         print("session exist, call chat")
 
+        currentBrnData = getBrnData(query_txt.session_id)
+        #print(currentBrnData)
+
+        formulated_query = query_txt.query + " " + currentBrnData
+
         url = 'http://127.0.0.1:8000/chat/sharif'
-        data = {"query": query_txt.query, "session_id": query_txt.session_id}
+        data = {"query": formulated_query, "session_id": query_txt.session_id}
         response = requests.post(url, json=data)
         print(response.text)
     else:
@@ -88,24 +98,15 @@ def askMe(query_txt: Query):
             sessionIdList.append(currentSessionId)
             print("add sessionId: " + currentSessionId + " into list")
 
+        currentBrnData = getBrnData(currentSessionId)
+        #print(currentBrnData)
+
+        formulated_query = query_txt.query + " " + currentBrnData
+
         url = 'http://127.0.0.1:8000/chat/sharif'
-        data = {"query": query_txt.query, "session_id": query_txt.session_id}
+        data = {"query": formulated_query, "session_id": query_txt.session_id}
         response = requests.post(url, json=data)
         print(response.text)
-
-    ## TODO: call /chat/{chatbot_name}
-    '''
-    {
-        "query": formulate_query,
-        "session_id": session_id
-    }
-
-    response
-    {
-        "message": "New session for the BRN XXXXXX have been created",
-        "session_id": "XXXXXX-XXXXXX-XXXXXX"
-    }
-    '''
 
     return {"askMe successful"}
 
@@ -118,11 +119,11 @@ def processing_ctos_data(brn, session_id):
 
     ctos_data = json.dumps(extracted_xml)
 
-    if brn in brnDict:
+    if session_id in brnDict:
         print("brn data exists, do nothing")
     else:
         print("brn data NOT exists, update dict")
-        brnDict.update({brn:ctos_data})
+        brnDict.update({session_id:ctos_data})
 
     #for x, y in brnDict.items():
     #    print(x, y)
@@ -130,13 +131,15 @@ def processing_ctos_data(brn, session_id):
     return{"createSession OK"}
 
 ## a method to return data from the dictionary
-def getBrnData(brn):
-    print("call getBrnData API with brn:" + brn)
+def getBrnData(session_id):
+    print("call getBrnData API with session_id:" + session_id)
 
-    currentBrnData = brnDict.get("1408874K")
+    brnData = brnDict.get(session_id)
 
     print("=======================")
-    print(currentBrnData)
+    print(brnData)
+
+    return brnData
 
 # to find sessionId supplied against the current sessionIdList
 def findSession(sessionId):
