@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from ctos_extractor import *
 from main import *
-import uuid
 import requests
 import json
 
@@ -18,6 +17,8 @@ class SessionId(BaseModel):
 
 # to store key value brn:ctosData
 brnDict = {}
+
+brnSessionIdDict = {}
 
 # store sessionId into list
 sessionIdList = []
@@ -88,7 +89,7 @@ def askMe(query_txt: Query):
     else:
         ## brn info not available, unable to create Brn Dict
         return("Session not FOUND, BRN info does not exist")
-
+    
     ## TODO: do we want to return entire response obj or only the answer?
     return {query_txt.session_id:post_response_json["answer"]}
 
@@ -107,10 +108,16 @@ def processing_ctos_data(brn, session_id):
         print("brn data NOT exists, update dict")
         brnDict.update({session_id:ctos_data})
 
+    if session_id in brnSessionIdDict:
+        print("sessionId brn found in brnSessionIdDict, do nothing")
+    else:
+        print("sessionId brn NOT found in brnSessionIdDict, update dict")
+        brnSessionIdDict.update({session_id:brn})
+
     #for x, y in brnDict.items():
     #    print(x, y)
 
-    return{"createSession OK"}
+    return{"processing_ctos_data OK"}
 
 ## a method to return data from the dictionary
 def getBrnData(session_id):
