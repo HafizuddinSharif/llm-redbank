@@ -1,0 +1,701 @@
+<report version="5.5.0" xmlns="http://ws.cmctos.com.my/ctosnet/response">
+  <enq_report id="BB-8624-20240702141620" report_type="CTOS" title="CTOS ENQUIRY">
+    <header>
+      <user id="cimbmck_xml">CIMB mckinsey</user>
+      <company id="CIMBMCK">CIMB cimb</company>
+      <account>CIMBMCK</account>
+      <tel/>
+      <fax/>
+      <enq_date>2024-07-02</enq_date>
+      <enq_time>14:16:20</enq_time>
+      <enq_status code="1">SUCCESS</enq_status>
+    </header>
+    <summary>
+      <enq_sum ptype="C" pcode="" seq="1">
+        <name>BLACK PEARL SDN BHD</name>
+        <ic_lcno>1408888K</ic_lcno>
+        <nic_brno/>
+        <stat>2000</stat>
+        <dd_index>0000</dd_index>
+        <mphone_nos/>
+        <ref_no/>
+        <dist_code/>
+        <purpose code="200"/>
+        <include_consent>1</include_consent>
+        <include_ctos>1</include_ctos>
+        <include_trex>1</include_trex>
+        <include_ccris sum="0">1</include_ccris>
+        <include_dcheq>0</include_dcheq>
+        <include_ccris_supp>0</include_ccris_supp>
+        <include_fico>0</include_fico>
+        <include_sfi>0</include_sfi>
+        <include_ssm>0</include_ssm>
+        <include_ssm_retention>30</include_ssm_retention>
+        <include_angkasa>0</include_angkasa>
+        <include_etr_plus>2</include_etr_plus>
+        <confirm_entity>1529327</confirm_entity>
+        <enq_status code="1">SUCCESS</enq_status>
+        <enq_code code="3">CTOS Report with BPH</enq_code>
+      </enq_sum>
+    </summary>
+    <enquiry seq="1">
+      <section_summary>
+        <ctos>
+          <bankruptcy status="0"/>
+          <legal total="0" value="0"/>
+          <legal_personal_capacity total="0" value="0"/>
+          <legal_non_personal_capacity total="0" value="0"/>
+          <related_parties>
+            <bankruptcy status="0"/>
+            <legal total="0" value="0"/>
+            <legal_personal_capacity total="0" value="0"/>
+            <legal_non_personal_capacity total="0" value="0"/>
+          </related_parties>
+        </ctos>
+        <tr>
+          <trex_ref negative="0" positive="0"/>
+          <related_parties>
+            <trex_ref negative="0" positive="0"/>
+          </related_parties>
+        </tr>
+        <ccris>
+          <application total="0" approved="0" pending="0"/>
+          <facility total="2" arrears="0" value="44300.00"/>
+          <special_attention accounts="0"/>
+          <related_parties>
+            <application total="0" approved="0" pending="0"/>
+            <facility total="0" value="0.00" arrears="0"/>
+            <special_attention accounts="0"/>
+          </related_parties>
+        </ccris>
+        <dcheqs entity="0" related_parties="0"/>
+      </section_summary>
+      <section_a data="true" title="SECTION A - COMPANIES COMMISSION OF MALAYSIA (CCM) INFORMATION">
+        <record rpttype="CE" seq="1">
+          <name match="1">WHITE PEARL SDN BHD</name>
+          <additional_registration_no>201801700087</additional_registration_no>
+          <ic_lcno>1408888</ic_lcno>
+          <lc_checksum>K</lc_checksum>
+          <addr date="01-07-2024">LOT 4, JALAN KIAMBANG,80000 PETALING JAYA,SELANGOR</addr>
+          <addr1>LOT 4, JALAN KIAMBANG,80000 PETALING JAYA, SELANGOR</addr1>
+          <addr_breakdown>
+            <addr1>LOT 4, JALAN KIAMBANG</addr1>
+            <addr2/>
+            <addr3/>
+            <addr4/>
+            <city>PETALING JAYA</city>
+            <state>SELANGOR</state>
+            <postcode>80000</postcode>
+            <country/>
+            <last_updated_date>01-07-2024</last_updated_date>
+          </addr_breakdown>
+          <ccris_addresses/>
+          <source>SSM</source>
+          <previous_cpo_date/>
+          <cpo_date>01-07-2024</cpo_date>
+          <register_date>28-11-2018</register_date>
+          <comp_category code="S">LIMITED BY SHARES</comp_category>
+          <comp_type code="R">PRIVATE LIMITED</comp_type>
+          <status>EXISTING</status>
+          <type_of_business>ACTIVITIES OF REAL ESTATE AGENTS AND BROKERS FOR BUYING, SELLING AND RENTING OF REAL ESTATE</type_of_business>
+          <remark>TEST DATA PREPARED BY FATIN_MAYBANK</remark>
+          <capital>100000</capital>
+          <paid_up>100000</paid_up>
+          <directors seq="1">
+            <director seq="1">
+              <name>HAFIZ BIN AZMAN</name>
+              <alias/>
+              <ic_lcno/>
+              <nic_brno>880712036623</nic_brno>
+              <position>DS</position>
+              <addr>NO 99 JALAN KIAMBANG, 80000 PETALING JAYA, SELANGOR</addr>
+              <appoint>27-03-2018</appoint>
+              <resign_date/>
+              <equity>40000</equity>
+              <equity_percentage>100.00</equity_percentage>
+              <remark>Director &amp; shareholder</remark>
+              <party_type>I</party_type>
+            </director>
+          </directors>
+          <secretaries/>
+          <previous_names name="" change_date=""/>
+          <charges>
+            <charge seq="1"/>
+          </charges>
+          <sme_financial_score/>
+          <accounts auditor_name="MAGGI &amp; PARTNERS">
+            <account seq="1">
+              <conac>false</conac>
+              <unqrep>true</unqrep>
+              <auditor_name>MAGGI &amp; PARTNERS</auditor_name>
+              <auditor_address>SUITE 335, 3RD FLOOR, JOHOR TOWER, JALAN GEREJA, 80100, JOHOR BAHRU, JOHOR</auditor_address>
+              <exempted>false</exempted>
+              <pldd>31-03-2022</pldd>
+              <bsdd>2021-06-30</bsdd>
+              <tabledt>30-09-2022</tabledt>
+              <bsfatot>0.00</bsfatot>
+              <othass>0.00</othass>
+              <bscatot>197766.00</bscatot>
+              <bsclbank>1408868.00</bsclbank>
+              <totass>9999999999999999.00</totass>
+              <curlib>177980.00</curlib>
+              <bsslltd>1348483.00</bsslltd>
+              <bsclstd>0.00</bsclstd>
+              <totlib>1526463.00</totlib>
+              <bsqpuc>100000.00</bsqpuc>
+              <bsqres>0.00</bsqres>
+              <bsqupro>-19829.00</bsqupro>
+              <networth>9999980171.00</networth>
+              <bsqmint>0.00</bsqmint>
+              <tot>1606634.00</tot>
+              <turnover>2483001.00</turnover>
+              <plnpbt>-359422.00</plnpbt>
+              <plnpat>-63323.00</plnpat>
+              <plminin>0.00</plminin>
+              <plnetdiv>0.00</plnetdiv>
+              <plyear>-63323.00</plyear>
+              <turnover_growth>2.3</turnover_growth>
+              <profit_margin>-34.0</profit_margin>
+              <return_on_equity>-79.0</return_on_equity>
+              <currat>10.11</currat>
+              <workcap>119786.00</workcap>
+              <gear>19.0</gear>
+              <dividen_pay_out>0.0</dividen_pay_out>
+              <dividen_per_share>0.0</dividen_per_share>
+              <new_form>1</new_form>
+            </account>
+            <account seq="2">
+              <conac>false</conac>
+              <unqrep>false</unqrep>
+              <auditor_name>MAGGI &amp; PARTNERS</auditor_name>
+              <auditor_address>SUITE 335, 3RD FLOOR, JOHOR TOWER, JALAN GEREJA, 80100, JOHOR BAHRU, JOHOR</auditor_address>
+              <exempted>false</exempted>
+              <pldd>31-03-2021</pldd>
+              <bsdd>2021-06-30</bsdd>
+              <tabledt>30-09-2021</tabledt>
+              <bsfatot>0.00</bsfatot>
+              <othass>0.00</othass>
+              <bscatot>134615.00</bscatot>
+              <bsclbank>95705.00</bsclbank>
+              <totass>230320.00</totass>
+              <curlib>86826.00</curlib>
+              <bsslltd>0.00</bsslltd>
+              <bsclstd>0.00</bsclstd>
+              <totlib>86826.00</totlib>
+              <bsqpuc>100000.00</bsqpuc>
+              <bsqres>0.00</bsqres>
+              <bsqupro>43494.00</bsqupro>
+              <networth>143494.00</networth>
+              <bsqmint>0.00</bsqmint>
+              <tot>230320.00</tot>
+              <turnover>2320508.00</turnover>
+              <plnpbt>205717.00</plnpbt>
+              <plnpat>87807.00</plnpat>
+              <plminin>0.00</plminin>
+              <plnetdiv>0.00</plnetdiv>
+              <plyear>87807.00</plyear>
+              <turnover_growth>34.9</turnover_growth>
+              <profit_margin>80.9</profit_margin>
+              <return_on_equity>61.2</return_on_equity>
+              <currat>1.55</currat>
+              <workcap>7789.00</workcap>
+              <gear>0.99</gear>
+              <dividen_pay_out>0.0</dividen_pay_out>
+              <dividen_per_share>0.0</dividen_per_share>
+              <new_form>1</new_form>
+            </account>
+            <account seq="3">
+              <conac>false</conac>
+              <unqrep>true</unqrep>
+              <auditor_name>MAGGI &amp; PARTNERS</auditor_name>
+              <auditor_address>SUITE 335, 3RD FLOOR, JOHOR TOWER, JALAN GEREJA, 80100, JOHOR BAHRU, JOHOR</auditor_address>
+              <exempted>false</exempted>
+              <pldd>31-03-2020</pldd>
+              <bsdd>2021-06-30</bsdd>
+              <tabledt>30-09-2020</tabledt>
+              <bsfatot>0.00</bsfatot>
+              <othass>0.00</othass>
+              <bscatot>46684.00</bscatot>
+              <bsclbank>109663.00</bsclbank>
+              <totass>156347.00</totass>
+              <curlib>200657.00</curlib>
+              <bsslltd>0.00</bsslltd>
+              <bsclstd>0.00</bsclstd>
+              <totlib>200657.00</totlib>
+              <bsqpuc>3.00</bsqpuc>
+              <bsqres>0.00</bsqres>
+              <bsqupro>-44313.00</bsqupro>
+              <networth>-44310.00</networth>
+              <bsqmint>0.00</bsqmint>
+              <tot>156347.00</tot>
+              <turnover>2149104.00</turnover>
+              <plnpbt>132961.00</plnpbt>
+              <plnpat>32961.00</plnpat>
+              <plminin>0.00</plminin>
+              <plnetdiv>0.00</plnetdiv>
+              <plyear>32961.00</plyear>
+              <turnover_growth/>
+              <profit_margin>12.9</profit_margin>
+              <return_on_equity>0.0</return_on_equity>
+              <currat>1.23</currat>
+              <workcap>-153973.00</workcap>
+              <gear>0.0</gear>
+              <dividen_pay_out>0.0</dividen_pay_out>
+              <dividen_per_share>0.0</dividen_per_share>
+              <new_form>1</new_form>
+            </account>
+          </accounts>
+          <capital_details>
+            <auth_capital/>
+            <paidup_capital>100000</paidup_capital>
+            <paidup_ord_amount>100000.00</paidup_ord_amount>
+            <paidup_ord_divided>0</paidup_ord_divided>
+            <paidup_ord_nominal>100</paidup_ord_nominal>
+            <paidup_pre_amount>0.00</paidup_pre_amount>
+            <paidup_pre_divided>0</paidup_pre_divided>
+            <paidup_pre_nominal>0</paidup_pre_nominal>
+            <paidup_oth_amount>0.00</paidup_oth_amount>
+            <paidup_oth_divided>0</paidup_oth_divided>
+            <paidup_oth_nominal>0</paidup_oth_nominal>
+          </capital_details>
+          <brn_ssm>1408888K</brn_ssm>
+          <msic_ssms>
+            <msic_ssm code="56107" priority="1">Food or beverage, food and beverage preparation in market stalls/hawkers</msic_ssm>
+          </msic_ssms>
+        </record>
+      </section_a>
+      <section_b title="SECTION B - INTERNAL LIST" data="true">
+        <history seq="1" rpttype="EH" year="2024">
+          <period month="1">
+            <entity type="FI" value="0"/>
+            <entity type="NON-FI" value="0"/>
+            <entity type="LAWYER" value="0"/>
+          </period>
+          <period month="2">
+            <entity type="FI" value="0"/>
+            <entity type="NON-FI" value="0"/>
+            <entity type="LAWYER" value="0"/>
+          </period>
+          <period month="3">
+            <entity type="FI" value="0"/>
+            <entity type="NON-FI" value="0"/>
+            <entity type="LAWYER" value="0"/>
+          </period>
+          <period month="4">
+            <entity type="FI" value="0"/>
+            <entity type="NON-FI" value="0"/>
+            <entity type="LAWYER" value="0"/>
+          </period>
+          <period month="5">
+            <entity type="FI" value="0"/>
+            <entity type="NON-FI" value="0"/>
+            <entity type="LAWYER" value="0"/>
+          </period>
+          <period month="6">
+            <entity type="FI" value="0"/>
+            <entity type="NON-FI" value="0"/>
+            <entity type="LAWYER" value="0"/>
+          </period>
+          <period month="7">
+            <entity type="FI" value="0"/>
+            <entity type="NON-FI" value="0"/>
+            <entity type="LAWYER" value="0"/>
+          </period>
+          <period month="8">
+            <entity type="FI" value="0"/>
+            <entity type="NON-FI" value="0"/>
+            <entity type="LAWYER" value="0"/>
+          </period>
+          <period month="9">
+            <entity type="FI" value="0"/>
+            <entity type="NON-FI" value="0"/>
+            <entity type="LAWYER" value="0"/>
+          </period>
+          <period month="10">
+            <entity type="FI" value="0"/>
+            <entity type="NON-FI" value="0"/>
+            <entity type="LAWYER" value="0"/>
+          </period>
+          <period month="11">
+            <entity type="FI" value="0"/>
+            <entity type="NON-FI" value="0"/>
+            <entity type="LAWYER" value="0"/>
+          </period>
+          <period month="12">
+            <entity type="FI" value="0"/>
+            <entity type="NON-FI" value="0"/>
+            <entity type="LAWYER" value="0"/>
+          </period>
+        </history>
+        <history seq="2" rpttype="EH" year="2023">
+          <period month="1">
+            <entity type="FI" value="0"/>
+            <entity type="NON-FI" value="0"/>
+            <entity type="LAWYER" value="0"/>
+          </period>
+          <period month="2">
+            <entity type="FI" value="0"/>
+            <entity type="NON-FI" value="0"/>
+            <entity type="LAWYER" value="0"/>
+          </period>
+          <period month="3">
+            <entity type="FI" value="0"/>
+            <entity type="NON-FI" value="0"/>
+            <entity type="LAWYER" value="0"/>
+          </period>
+          <period month="4">
+            <entity type="FI" value="0"/>
+            <entity type="NON-FI" value="0"/>
+            <entity type="LAWYER" value="0"/>
+          </period>
+          <period month="5">
+            <entity type="FI" value="0"/>
+            <entity type="NON-FI" value="0"/>
+            <entity type="LAWYER" value="0"/>
+          </period>
+          <period month="6">
+            <entity type="FI" value="0"/>
+            <entity type="NON-FI" value="0"/>
+            <entity type="LAWYER" value="0"/>
+          </period>
+          <period month="7">
+            <entity type="FI" value="0"/>
+            <entity type="NON-FI" value="0"/>
+            <entity type="LAWYER" value="0"/>
+          </period>
+          <period month="8">
+            <entity type="FI" value="0"/>
+            <entity type="NON-FI" value="0"/>
+            <entity type="LAWYER" value="0"/>
+          </period>
+          <period month="9">
+            <entity type="FI" value="0"/>
+            <entity type="NON-FI" value="0"/>
+            <entity type="LAWYER" value="0"/>
+          </period>
+          <period month="10">
+            <entity type="FI" value="0"/>
+            <entity type="NON-FI" value="0"/>
+            <entity type="LAWYER" value="0"/>
+          </period>
+          <period month="11">
+            <entity type="FI" value="0"/>
+            <entity type="NON-FI" value="0"/>
+            <entity type="LAWYER" value="0"/>
+          </period>
+          <period month="12">
+            <entity type="FI" value="0"/>
+            <entity type="NON-FI" value="0"/>
+            <entity type="LAWYER" value="0"/>
+          </period>
+        </history>
+      </section_b>
+      <section_c title="SECTION C - DIRECTORSHIPS AND BUSINESS INTERESTS" data="false"/>
+      <section_d title="SECTION D" data="false"/>
+      <section_d2 title="SECTION D2 - SUBJECT AS PLAINTIFF" data="false"/>
+      <section_ccris title="SECTION CCRIS" data="true">
+        <summary entity_key="1529327" entity_warning="Pending Verification" fi_code="">
+          <application>
+            <approved count="0">0.00</approved>
+            <pending count="0">0.00</pending>
+          </application>
+          <liabilities>
+            <borrower total_limit="70000.00" fec_limit="0.00">44300.00</borrower>
+            <guarantor/>
+          </liabilities>
+          <legal status="1"/>
+          <special_attention status="0"/>
+          <special_name status="0"/>
+        </summary>
+        <derivatives>
+          <application>
+            <date>01-01-2022</date>
+            <facility code="CRDTCARD">Credit Card</facility>
+          </application>
+          <facilities>
+            <secure total="0">
+              <outstanding average="0.0" limit="0">0</outstanding>
+            </secure>
+            <unsecure total="2">
+              <outstanding average="0.0" limit="63">44300</outstanding>
+            </unsecure>
+          </facilities>
+          <credit_card avg_usage_6_mths="8.17"/>
+          <oth_revolving_credits avg_usage_6_mths="0.00"/>
+          <charge_card min_usage_12_months="0" max_usage_12_months="0"/>
+          <ptptn total="0"/>
+          <local_lenders total="2"/>
+          <foreign_lenders total="0"/>
+        </derivatives>
+        <applications/>
+        <accounts>
+          <account>
+            <org1/>
+            <org2/>
+            <mdta_id>15293271</mdta_id>
+            <my_fgn>M</my_fgn>
+            <approval_date>01-01-2022</approval_date>
+            <capacity code="Own">The loan is for this customer only</capacity>
+            <lender_type code="CB">Commercial bank and Islamic bank</lender_type>
+            <limit>50000</limit>
+            <collaterals>
+              <collateral code="00">
+                <name>Clean</name>
+                <value/>
+              </collateral>
+            </collaterals>
+            <legal>
+              <date/>
+            </legal>
+            <sub_accounts>
+              <sub_account>
+                <facility code="CRDTCARD">Credit Card</facility>
+                <repay_term code="MTH">Monthly</repay_term>
+                <collaterals/>
+                <cr_positions>
+                  <cr_position>
+                    <status code="O">Outstanding</status>
+                    <balance>24500</balance>
+                    <position_date>31-03-2024</position_date>
+                    <inst_arrears>0</inst_arrears>
+                    <mon_arrears>0</mon_arrears>
+                    <inst_amount>1,000</inst_amount>
+                    <rescheduled_date/>
+                    <restructured_date/>
+                  </cr_position>
+                  <cr_position>
+                    <status/>
+                    <balance/>
+                    <position_date>29-02-2024</position_date>
+                    <inst_arrears>0</inst_arrears>
+                    <mon_arrears/>
+                    <inst_amount/>
+                    <rescheduled_date/>
+                    <restructured_date/>
+                  </cr_position>
+                  <cr_position>
+                    <status/>
+                    <balance/>
+                    <position_date>31-01-2024</position_date>
+                    <inst_arrears>0</inst_arrears>
+                    <mon_arrears/>
+                    <inst_amount/>
+                    <rescheduled_date/>
+                    <restructured_date/>
+                  </cr_position>
+                  <cr_position>
+                    <status/>
+                    <balance/>
+                    <position_date>31-12-2023</position_date>
+                    <inst_arrears>0</inst_arrears>
+                    <mon_arrears/>
+                    <inst_amount/>
+                    <rescheduled_date/>
+                    <restructured_date/>
+                  </cr_position>
+                  <cr_position>
+                    <status/>
+                    <balance/>
+                    <position_date>30-11-2023</position_date>
+                    <inst_arrears>0</inst_arrears>
+                    <mon_arrears/>
+                    <inst_amount/>
+                    <rescheduled_date/>
+                    <restructured_date/>
+                  </cr_position>
+                  <cr_position>
+                    <status/>
+                    <balance/>
+                    <position_date>31-10-2023</position_date>
+                    <inst_arrears>0</inst_arrears>
+                    <mon_arrears/>
+                    <inst_amount/>
+                    <rescheduled_date/>
+                    <restructured_date/>
+                  </cr_position>
+                  <cr_position>
+                    <status/>
+                    <balance/>
+                    <position_date>30-09-2023</position_date>
+                    <inst_arrears>0</inst_arrears>
+                    <mon_arrears/>
+                    <inst_amount/>
+                    <rescheduled_date/>
+                    <restructured_date/>
+                  </cr_position>
+                  <cr_position>
+                    <status/>
+                    <balance/>
+                    <position_date>31-08-2023</position_date>
+                    <inst_arrears>0</inst_arrears>
+                    <mon_arrears/>
+                    <inst_amount/>
+                    <rescheduled_date/>
+                    <restructured_date/>
+                  </cr_position>
+                  <cr_position>
+                    <status/>
+                    <balance/>
+                    <position_date>31-07-2023</position_date>
+                    <inst_arrears>0</inst_arrears>
+                    <mon_arrears/>
+                    <inst_amount/>
+                    <rescheduled_date/>
+                    <restructured_date/>
+                  </cr_position>
+                </cr_positions>
+              </sub_account>
+            </sub_accounts>
+          </account>
+          <account>
+            <org1/>
+            <org2/>
+            <mdta_id>15293272</mdta_id>
+            <my_fgn>M</my_fgn>
+            <approval_date>01-11-2023</approval_date>
+            <capacity code="Own">The loan is for this customer only</capacity>
+            <lender_type code="CB">Commercial bank and Islamic bank</lender_type>
+            <limit>20000</limit>
+            <collaterals>
+              <collateral code="00">
+                <name>Clean</name>
+                <value/>
+              </collateral>
+            </collaterals>
+            <legal status="10">
+              <name>Summon/Writ files</name>
+              <date>02-04-2024</date>
+            </legal>
+            <sub_accounts>
+              <sub_account>
+                <facility code="PELNFNCE">Personal Loans/Financing</facility>
+                <repay_term code="MTH">Monthly</repay_term>
+                <collaterals/>
+                <cr_positions>
+                  <cr_position>
+                    <status code="O">Outstanding</status>
+                    <balance>19800</balance>
+                    <position_date>30-04-2024</position_date>
+                    <inst_arrears>0</inst_arrears>
+                    <mon_arrears>0</mon_arrears>
+                    <inst_amount>1,000</inst_amount>
+                    <rescheduled_date/>
+                    <restructured_date/>
+                  </cr_position>
+                  <cr_position>
+                    <status/>
+                    <balance/>
+                    <position_date>31-03-2024</position_date>
+                    <inst_arrears>0</inst_arrears>
+                    <mon_arrears/>
+                    <inst_amount/>
+                    <rescheduled_date/>
+                    <restructured_date/>
+                  </cr_position>
+                  <cr_position>
+                    <status/>
+                    <balance/>
+                    <position_date>29-02-2024</position_date>
+                    <inst_arrears>0</inst_arrears>
+                    <mon_arrears/>
+                    <inst_amount/>
+                    <rescheduled_date/>
+                    <restructured_date/>
+                  </cr_position>
+                  <cr_position>
+                    <status/>
+                    <balance/>
+                    <position_date>31-01-2024</position_date>
+                    <inst_arrears>0</inst_arrears>
+                    <mon_arrears/>
+                    <inst_amount/>
+                    <rescheduled_date/>
+                    <restructured_date/>
+                  </cr_position>
+                  <cr_position>
+                    <status/>
+                    <balance/>
+                    <position_date>31-12-2023</position_date>
+                    <inst_arrears>0</inst_arrears>
+                    <mon_arrears/>
+                    <inst_amount/>
+                    <rescheduled_date/>
+                    <restructured_date/>
+                  </cr_position>
+                  <cr_position>
+                    <status/>
+                    <balance/>
+                    <position_date>30-11-2023</position_date>
+                    <inst_arrears>0</inst_arrears>
+                    <mon_arrears/>
+                    <inst_amount/>
+                    <rescheduled_date/>
+                    <restructured_date/>
+                  </cr_position>
+                  <cr_position>
+                    <status/>
+                    <balance/>
+                    <position_date>31-10-2023</position_date>
+                    <inst_arrears>0</inst_arrears>
+                    <mon_arrears/>
+                    <inst_amount/>
+                    <rescheduled_date/>
+                    <restructured_date/>
+                  </cr_position>
+                  <cr_position>
+                    <status/>
+                    <balance/>
+                    <position_date>30-09-2023</position_date>
+                    <inst_arrears>0</inst_arrears>
+                    <mon_arrears/>
+                    <inst_amount/>
+                    <rescheduled_date/>
+                    <restructured_date/>
+                  </cr_position>
+                  <cr_position>
+                    <status/>
+                    <balance/>
+                    <position_date>31-08-2023</position_date>
+                    <inst_arrears>0</inst_arrears>
+                    <mon_arrears/>
+                    <inst_amount/>
+                    <rescheduled_date/>
+                    <restructured_date/>
+                  </cr_position>
+                  <cr_position>
+                    <status/>
+                    <balance/>
+                    <position_date>31-07-2023</position_date>
+                    <inst_arrears>0</inst_arrears>
+                    <mon_arrears/>
+                    <inst_amount/>
+                    <rescheduled_date/>
+                    <restructured_date/>
+                  </cr_position>
+                </cr_positions>
+              </sub_account>
+            </sub_accounts>
+          </account>
+        </accounts>
+      </section_ccris>
+      <section_dcheqs title="" data="false"/>
+      <section_ccris_supp title="SECTION CCRIS SUPPLEMENTARY" data="false"/>
+      <section_angkasa title="SECTION ANGKASA" data="false"/>
+      <section_etr_plus title="ETR PLUS" data="false"/>
+    </enquiry>
+  </enq_report>
+  <trex status="0">
+    <subject_request>
+      <party_type>C</party_type>
+      <name>BLACK PEARL SDN BHD</name>
+      <iclc>1408888</iclc>
+      <nicbr/>
+      <date_requested>02-07-2024 14:16:21</date_requested>
+      <date_completed>02-07-2024 14:16:21</date_completed>
+      <requester_id/>
+      <requester_name/>
+      <requester_comp_code>CIMBMCK</requester_comp_code>
+      <requester_account>CIMBMCK</requester_account>
+    </subject_request>
+  </trex>
+</report>
