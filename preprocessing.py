@@ -31,6 +31,9 @@ def send_brn_start_conversation(customerData: CustomerData):
     currentUUID = str(uuid.uuid4())
 
     ## TODO: call main API /start-session/{chatbot_name} to get sessionId
+    '''
+        duplicate askMe logic to here
+    '''
 
     #print("Your sessionId: " + currentUUID)
 
@@ -102,3 +105,4 @@ def getBrnData(brn):
     print("=======================")
     print(currentBrnData)
 
+## TODO: API for suggested bubble - redflags, 
