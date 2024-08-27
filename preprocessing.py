@@ -64,6 +64,8 @@ def askMe(query_txt: Query):
 
     # send question to mainBot
 
+    post_response_json = "UNKNOWN"
+
     # check if session id exist, if exist, call /chat, if not exist call /sharif
     if findSession(query_txt.session_id):
         # call /chat/{chatbot_name}
@@ -77,35 +79,18 @@ def askMe(query_txt: Query):
         url = 'http://127.0.0.1:8000/chat/sharif'
         data = {"query": formulated_query, "session_id": query_txt.session_id}
         response = requests.post(url, json=data)
-        print(response.text)
+
+        post_response_json = response.json()
+        print("post response json: ")
+        print(post_response_json["answer"])
+
+        #print(response.text)
     else:
-        # call start-session, call /chat/{chatbot_name}
-        print("session does not exist, start-session followed up by chat")
+        ## brn info not available, unable to create Brn Dict
+        return("Session not FOUND, BRN info does not exist")
 
-        ## call main API /start-session/{chatbot_name} to get sessionId
-        url = 'http://127.0.0.1:8000/start-session/sharif'
-        response = requests.get(url)
-        currentSessionId = response.text.replace('"', '')
-        print("Your sessionId: " + currentSessionId)
-
-        # check if sessionId exist, else update sessionIdList
-        if currentSessionId in sessionIdList:
-            print("session EXIST.")
-        else:
-            sessionIdList.append(currentSessionId)
-            print("add sessionId: " + currentSessionId + " into list")
-
-        currentBrnData = getBrnData(currentSessionId)
-        #print(currentBrnData)
-
-        formulated_query = query_txt.query + " " + currentBrnData
-
-        url = 'http://127.0.0.1:8000/chat/sharif'
-        data = {"query": formulated_query, "session_id": query_txt.session_id}
-        response = requests.post(url, json=data)
-        print(response.text)
-
-    return {"askMe successful"}
+    ## TODO: do we want to return entire response obj or only the answer?
+    return {query_txt.session_id:post_response_json["answer"]}
 
 def processing_ctos_data(brn, session_id):
     print("call processing_ctos_data API with brn:" + brn + ", and session_id: " + session_id)
@@ -133,8 +118,8 @@ def getBrnData(session_id):
 
     brnData = brnDict.get(session_id)
 
-    print("=======================")
-    print(brnData)
+    #print("=======================")
+    #print(brnData)
 
     return brnData
 
