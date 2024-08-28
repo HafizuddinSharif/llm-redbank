@@ -195,9 +195,9 @@ FE to send-brn to BE to create the session
 **response:**
 
 ```
-[
-    "session created with session_id: d8709baa-dd5d-4082-941a-df623da4051a"
-]
+{
+    "session_id": "87c92d35-681a-468f-abd1-a4ef4b2b2f67"
+}
 ```
 
 ## POST "/askMe"

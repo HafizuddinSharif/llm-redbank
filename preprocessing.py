@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from ctos_extractor import *
 from main import *
-import uuid
 import requests
 import json
 
@@ -18,6 +17,8 @@ class SessionId(BaseModel):
 
 # to store key value brn:ctosData
 brnDict = {}
+
+brnSessionIdDict = {}
 
 # store sessionId into list
 sessionIdList = []
@@ -54,7 +55,7 @@ def send_brn_start_conversation(customerData: CustomerData):
     # create brnDict to store brn data
     processing_ctos_data(customerData.brn, currentSessionId)
 
-    return {"session created with session_id: " + currentSessionId}
+    return {"session_id":currentSessionId}
 
 
 @app.post("/askMe")
@@ -63,6 +64,8 @@ def askMe(query_txt: Query):
     print("calling askMe with: " + query_txt.query + " with session_id: " + query_txt.session_id)
 
     # send question to mainBot
+
+    post_response_json = "UNKNOWN"
 
     # check if session id exist, if exist, call /chat, if not exist call /sharif
     if findSession(query_txt.session_id):
@@ -77,35 +80,18 @@ def askMe(query_txt: Query):
         url = 'http://127.0.0.1:8000/chat/sharif'
         data = {"query": formulated_query, "session_id": query_txt.session_id}
         response = requests.post(url, json=data)
-        print(response.text)
+
+        post_response_json = response.json()
+        #print("post response json: ")
+        print(post_response_json["answer"])
+
+        #print(response.text)
     else:
-        # call start-session, call /chat/{chatbot_name}
-        print("session does not exist, start-session followed up by chat")
-
-        ## call main API /start-session/{chatbot_name} to get sessionId
-        url = 'http://127.0.0.1:8000/start-session/sharif'
-        response = requests.get(url)
-        currentSessionId = response.text.replace('"', '')
-        print("Your sessionId: " + currentSessionId)
-
-        # check if sessionId exist, else update sessionIdList
-        if currentSessionId in sessionIdList:
-            print("session EXIST.")
-        else:
-            sessionIdList.append(currentSessionId)
-            print("add sessionId: " + currentSessionId + " into list")
-
-        currentBrnData = getBrnData(currentSessionId)
-        #print(currentBrnData)
-
-        formulated_query = query_txt.query + " " + currentBrnData
-
-        url = 'http://127.0.0.1:8000/chat/sharif'
-        data = {"query": formulated_query, "session_id": query_txt.session_id}
-        response = requests.post(url, json=data)
-        print(response.text)
-
-    return {"askMe successful"}
+        ## brn info not available, unable to create Brn Dict
+        return("Session not FOUND, BRN info does not exist")
+    
+    ## TODO: do we want to return entire response obj or only the answer?
+    return {query_txt.session_id:post_response_json["answer"]}
 
 def processing_ctos_data(brn, session_id):
     print("call processing_ctos_data API with brn:" + brn + ", and session_id: " + session_id)
@@ -122,10 +108,16 @@ def processing_ctos_data(brn, session_id):
         print("brn data NOT exists, update dict")
         brnDict.update({session_id:ctos_data})
 
+    if session_id in brnSessionIdDict:
+        print("sessionId brn found in brnSessionIdDict, do nothing")
+    else:
+        print("sessionId brn NOT found in brnSessionIdDict, update dict")
+        brnSessionIdDict.update({session_id:brn})
+
     #for x, y in brnDict.items():
     #    print(x, y)
 
-    return{"createSession OK"}
+    return{"processing_ctos_data OK"}
 
 ## a method to return data from the dictionary
 def getBrnData(session_id):
@@ -133,8 +125,8 @@ def getBrnData(session_id):
 
     brnData = brnDict.get(session_id)
 
-    print("=======================")
-    print(brnData)
+    #print("=======================")
+    #print(brnData)
 
     return brnData
 
