@@ -152,7 +152,7 @@ def find_redflags(brn, session_id):
         redflagsDict.update({"customer_related_brankrupt":redflagsResponse})
         #return(redflagsResponse)
 
-    ## redflag if gear ratio < 50
+    ## redflag if gear ratio > 50
     extracted_latest_gear_ratio = extract_gear_ratio(brn)
     print("extracted_latest_gear_ratio: " + extracted_latest_gear_ratio)
     if float(extracted_latest_gear_ratio) > 50:
@@ -168,7 +168,7 @@ def find_redflags(brn, session_id):
         redflagsDict.update({"profit_margin":redflagsResponse})
         #return(redflagsResponse)
 
-    ## if legalStatus == 1, 
+    ## if legalStatus == 1, then extract the name and date
     extracted_legal_status = extract_legal_status(brn)
     print("extracted_legal_status: " + str(extracted_legal_status))
 
@@ -177,7 +177,7 @@ def find_redflags(brn, session_id):
         redflagsDict.update({"legal_status":redflagsResponse})
         #return(redflagsResponse)
 
-    ## if extracted_msic_code == 0, not highrisk, ==1 is HIGH RISK
+    ## if extracted_msic_code in the msicHighRiskList then HIGHRISK
     msicHighRiskList = ["94920", "92000", "84220", "73200", "63910", "59120", "59110", "52249", "52241", "47736", "46619", "43124", "30400", "28240", "19201", "19100", "16291", "09900", "09101", "08999", "08996", "08995", "08994", "08993", "08992", "08991", "08918", "08917", "08916", "08915", "08913", "08912", "08911", "08108", "08107", "08104", "08103", "07799", "07797", "07796", "07795", "07794", "07793", "07792", "07791", "07721", "07701", "07605", "06104", "06103", "06101", "05100", "05200", "02203"]
 
     extracted_msic_code = extract_msic_codes(brn)
@@ -195,7 +195,7 @@ def find_redflags(brn, session_id):
         redflagsDict.update({"trex_ref":redflagsResponse})
         #return(redflagsResponse)
 
-    ## extracted_age_of_company == 0, not highrisk, ==1 is HIGH RISK
+    ## 450 is days
     extracted_age_of_company = extract_age_of_company(brn)
     print("extracted_age_of_company: " + str(extracted_age_of_company))
     if int(extracted_age_of_company) < 450:
