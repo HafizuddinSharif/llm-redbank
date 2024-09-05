@@ -90,7 +90,7 @@ def extract_profit_margin(brn):
         return None
     
     xml_dict = xmltodict.parse(xml_content)
-    
+
     accounts = xml_dict['report']['enq_report']['enquiry']['section_a']['record']['accounts']['account']
 
     # Define the tags to extract
@@ -233,8 +233,8 @@ def storeXmlDict(brn):
         xmlDictWithBrn.update({brn:xml_dict})
 
     #print(xmlDictWithBrn)
-    for x in xmlDictWithBrn:
-        print(xmlDictWithBrn[x])
+    #for x in xmlDictWithBrn:
+    #    print(xmlDictWithBrn[x])
 
 
 def extract_xml(brn):
