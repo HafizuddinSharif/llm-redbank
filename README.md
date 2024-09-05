@@ -99,3 +99,14 @@ curl --location 'http://127.0.0.1:8181/askMe' \
     "session_id": "afcd3ac1-72ab-4ad6-a13b-a506ab04a636"
 }'
 ##
+
+4. To test redflags, copy session-id from the send-brn response  and replace the requests payload in bubble API
+
+##
+curl --location 'http://127.0.0.1:8181/bubble' \
+--header 'Content-Type: application/json' \
+--data '{
+    "query": "redflags",
+    "session_id": "d44bfc1a-3638-49ef-ab99-457f0bc0270a"
+}'
+##
