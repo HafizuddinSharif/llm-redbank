@@ -97,7 +97,6 @@ def askMe(query_txt: Query):
         ## brn info not available, unable to create Brn Dict
         return("Session not FOUND, BRN info does not exist")
     
-    ## TODO: do we want to return entire response obj or only the answer?
     return {query_txt.session_id:post_response_json["answer"]}
 
 
@@ -105,8 +104,6 @@ def askMe(query_txt: Query):
 def bubble(query_txt: Query):
     print("calling bubble with: " + query_txt.query + " with session_id: " + query_txt.session_id)
 
-    ## TODO: API for suggested bubble - redflags, 
-    ## logic to define redflags
     if findSession(query_txt.session_id):
         print("session exist, check the target bubble")
 
