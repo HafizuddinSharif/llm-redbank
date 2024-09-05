@@ -4,18 +4,12 @@ from datetime import datetime
 from datetime import date
 import time
 
+xmlDictWithBrn = {}
+
 def extract_bankruptcy_status(brn):
     #print("Call extract_bankruptcy_status with brn:" + brn)
-
-    try :
-        file_name = 'ctos_data/full-' + brn + '-response.xml'
-        #print(file_name)
-        with open(file_name, 'r') as file:
-            xml_content = file.read()
-    except:
-        return None
-
-    xml_dict = xmltodict.parse(xml_content)
+    
+    xml_dict = xmlDictWithBrn[brn]
     bankruptcy = xml_dict['report']['enq_report']['enquiry']['section_summary']['ctos']['bankruptcy']
     #print("bankruptcy status = " + bankruptcy)
     for label, value in bankruptcy.items():
@@ -29,15 +23,7 @@ def extract_bankruptcy_status(brn):
 def extract_related_parties_bankruptcy(brn):
     #print("Call extract_related_parties_bankruptcy with brn:" + brn)
 
-    try :
-        file_name = 'ctos_data/full-' + brn + '-response.xml'
-        #print(file_name)
-        with open(file_name, 'r') as file:
-            xml_content = file.read()
-    except:
-        return None
-    
-    xml_dict = xmltodict.parse(xml_content)
+    xml_dict = xmlDictWithBrn[brn]
     related_parties_bankruptcy = xml_dict['report']['enq_report']['enquiry']['section_summary']['ctos']['related_parties']['bankruptcy']
     for label, value in related_parties_bankruptcy.items():
         #print(f"{label}: {value}")
@@ -51,7 +37,7 @@ def extract_gear_ratio(brn):
 
     try :
         file_name = 'ctos_data/full-' + brn + '-response.xml'
-        #print(file_name)
+        print(file_name)
         with open(file_name, 'r') as file:
             xml_content = file.read()
     except:
@@ -97,13 +83,14 @@ def extract_profit_margin(brn):
 
     try :
         file_name = 'ctos_data/full-' + brn + '-response.xml'
-        #print(file_name)
+        print(file_name)
         with open(file_name, 'r') as file:
             xml_content = file.read()
     except:
         return None
     
     xml_dict = xmltodict.parse(xml_content)
+    
     accounts = xml_dict['report']['enq_report']['enquiry']['section_a']['record']['accounts']['account']
 
     # Define the tags to extract
@@ -141,15 +128,7 @@ def extract_profit_margin(brn):
 def extract_legal_status(brn):
     #print("Call extract_legal_status with brn:" + brn)
 
-    try :
-        file_name = 'ctos_data/full-' + brn + '-response.xml'
-        #print(file_name)
-        with open(file_name, 'r') as file:
-            xml_content = file.read()
-    except:
-        return None
-
-    xml_dict = xmltodict.parse(xml_content)
+    xml_dict = xmlDictWithBrn[brn]
     legal = xml_dict['report']['enq_report']['enquiry']['section_ccris']['summary']['legal']
 
     legalStatus = legal['@status']
@@ -186,15 +165,7 @@ def extract_legal_status(brn):
 
 def extract_msic_codes(brn):
     #print("Call extract_msic_codes with brn:" + brn)
-    try :
-        file_name = 'ctos_data/full-' + brn + '-response.xml'
-        #print(file_name)
-        with open(file_name, 'r') as file:
-            xml_content = file.read()
-    except:
-        return None
-    
-    xml_dict = xmltodict.parse(xml_content)
+    xml_dict = xmlDictWithBrn[brn]
     msic_ssms = xml_dict['report']['enq_report']['enquiry']['section_a']['record']['msic_ssms']['msic_ssm']
     #print(str(msic_ssms))
 
@@ -206,15 +177,7 @@ def extract_msic_codes(brn):
 def extract_trex(brn):
     #print("Call extract_trex with brn:" + brn)
 
-    try :
-        file_name = 'ctos_data/full-' + brn + '-response.xml'
-        #print(file_name)
-        with open(file_name, 'r') as file:
-            xml_content = file.read()
-    except:
-        return None
-    
-    xml_dict = xmltodict.parse(xml_content)
+    xml_dict = xmlDictWithBrn[brn]
     trexRef = xml_dict['report']['enq_report']['enquiry']['section_summary']['tr']['trex_ref']
     #print(str(trexRef))
 
@@ -230,15 +193,7 @@ def extract_trex(brn):
 def extract_age_of_company(brn):
     #print("Call extract_age_of_company with brn:" + brn)
 
-    try :
-        file_name = 'ctos_data/full-' + brn + '-response.xml'
-        #print(file_name)
-        with open(file_name, 'r') as file:
-            xml_content = file.read()
-    except:
-        return None
-    
-    xml_dict = xmltodict.parse(xml_content)
+    xml_dict = xmlDictWithBrn[brn]
     registerDate = xml_dict['report']['enq_report']['enquiry']['section_a']['record']['register_date']
     #print(str(registerDate))
 
@@ -261,7 +216,26 @@ def days_between_dates(dt1, dt2):
     b = time.mktime(time.strptime(dt2, date_format))
     delta = b - a
     return int(delta / 86400)
-    
+
+def storeXmlDict(brn):
+    print("Calling storeXmlDict with brn: ", brn)
+    try :
+        file_name = 'ctos_data/full-' + brn + '-response.xml'
+        print(file_name)
+        with open(file_name, 'r') as file:
+            xml_content = file.read()
+    except:
+        return None
+
+    xml_dict = xmltodict.parse(xml_content)
+
+    if brn not in xmlDictWithBrn:
+        xmlDictWithBrn.update({brn:xml_dict})
+
+    #print(xmlDictWithBrn)
+    for x in xmlDictWithBrn:
+        print(xmlDictWithBrn[x])
+
 
 def extract_xml(brn):
     try :
