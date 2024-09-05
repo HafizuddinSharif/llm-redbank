@@ -148,7 +148,7 @@ def find_redflags(brn, session_id):
         #return(redflagsResponse)
     
     if int(extracted_related_bankruptcy_status) == 1:
-        redflagsResponse = "<#>: The customer has related parties with a bankruptcy record. Please perform your due diligence and proceed with caution."
+        redflagsResponse = "The customer has related parties with a bankruptcy record. Please perform your due diligence and proceed with caution."
         redflagsDict.update({"customer_related_brankrupt":redflagsResponse})
         #return(redflagsResponse)
 
