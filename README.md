@@ -15,6 +15,10 @@ The backend server uses the following stuff:
 
 1. Make sure you have the latest `python` and `pip` installed in your laptop. You can check if it's installed by running `python --version` and `pip --version`
    - you need a minimum python 3.8.1 & pip 24.2 which come together from python 3.8.1 to run this project
+      - after install python, update your windows environment variable to have
+        - C:\Users\yapya\AppData\Roaming\Python\Python38
+        - C:\Users\yapya\AppData\Roaming\Python\Python38\Scripts
+   - restart your powershell terminal for its to recognize python n pip
    - install unvicorn, `pip install uvicorn`
    - ensure your uvicorn is in your env PATH
      `WARNING: The script uvicorn.exe is installed in 'C:\Users\yapya\AppData\Roaming\Python\Python38\Scripts' which is not on PATH.`
