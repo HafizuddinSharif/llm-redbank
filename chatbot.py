@@ -5,6 +5,7 @@ from langchain_community.document_loaders import DirectoryLoader
 from langchain_chroma import Chroma
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_ollama import ChatOllama, OllamaEmbeddings
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain.chains import create_history_aware_retriever, create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
@@ -14,8 +15,15 @@ import shutil
 
 store = {}
 
+import getpass
+import os
+
 CHROMA_ROOT_PATH = "chroma_db"
 UPLOADED_FILE_PATH = "uploaded_dir"
+USE_OPENAI = False
+
+if USE_OPENAI:
+    os.environ["OPENAI_API_KEY"] = getpass.getpass()
 
 def load_documents_pdf():
     loader = DirectoryLoader("data", glob="*.pdf")
@@ -58,7 +66,7 @@ def store_knowledge_2(chatbot_name) -> Chroma:
 
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     splits = text_splitter.split_documents(docs)
-    vectorstore = Chroma.from_documents(documents=splits, embedding=OllamaEmbeddings(model="mxbai-embed-large"))
+    vectorstore = Chroma.from_documents(documents=splits, embedding=OpenAIEmbeddings() if USE_OPENAI else OllamaEmbeddings(model="mxbai-embed-large"))
 
     # Retrieve and generate using the relevant snippets of the blog.
     retriever = vectorstore.as_retriever(f"group:{chatbot_name}", search_type="mmr")
@@ -82,7 +90,7 @@ def store_knowledge(chatbot_name):
     # Refresh the knowledge base with existing and newly uploaded files
     delete_old_knowledge_base_in_chroma(persist_directory)
 
-    vectorstore = Chroma(persist_directory=persist_directory, embedding_function=OllamaEmbeddings(model="mxbai-embed-large"))
+    vectorstore = Chroma(persist_directory=persist_directory, embedding_function= OpenAIEmbeddings() if USE_OPENAI else OllamaEmbeddings(model="mxbai-embed-large"))
     vectorstore.reset_collection()
     vectorstore.add_documents(splits)
     print("Finish storing knowledge...")
@@ -107,7 +115,7 @@ def delete_old_knowledge_base_in_chroma(directory):
 def load_retriever(chatbot_name):
     persist_directory = f"{CHROMA_ROOT_PATH}/{chatbot_name}"
     if os.path.exists(persist_directory):
-        vectorstore = Chroma(persist_directory=persist_directory, embedding_function=OllamaEmbeddings(model="mxbai-embed-large"))
+        vectorstore = Chroma(persist_directory=persist_directory, embedding_function=OpenAIEmbeddings() if USE_OPENAI else OllamaEmbeddings(model="mxbai-embed-large"))
         print(f"Document loaded for '{chatbot_name}':")
         # To check what is the loaded knowledge base files for a chatbot
         print_knowledge_base_files(vectorstore=vectorstore)
@@ -193,7 +201,7 @@ def get_file(chatbot_name: str, filename: str):
     return f"File '{file_path}' cannot be found. It's either the file does not exist or the chatbot name does not exist."
 
 def get_llm_model():
-     return ChatOllama(
+    return ChatOpenAI(model="gpt-4o-mini") if USE_OPENAI else ChatOllama(
         model="gemma2:2b",
         temperature=0,
         # other params...
