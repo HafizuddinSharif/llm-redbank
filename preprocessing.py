@@ -25,6 +25,14 @@ sessionIdList = []
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:4200"],  # Angular default URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 @app.post("/testData")
 def testData(sessionId: SessionId):
     getBrnData(sessionId.session_id)
