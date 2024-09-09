@@ -25,15 +25,6 @@ USE_OPENAI = False
 if USE_OPENAI:
     os.environ["OPENAI_API_KEY"] = getpass.getpass()
 
-def load_documents_pdf():
-    loader = DirectoryLoader("data", glob="*.pdf")
-
-def load_documents_1():
-    loader = DirectoryLoader("data", glob="**/*")
-    documents = loader.load()
-    print(len(documents))
-    return documents
-
 def load_documents(chatbot_name: str):
     loader = DirectoryLoader(f"{UPLOADED_FILE_PATH}/{chatbot_name}", glob="**/*")
     documents = loader.load()
@@ -60,17 +51,6 @@ def upload_documents(chatbot_name: str, answerMethod: str = Form(...), files: Li
         file_locations.append(file_location)
 
     return file_locations
-
-def store_knowledge_2(chatbot_name) -> Chroma:
-    docs = load_documents(chatbot_name=chatbot_name)
-
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-    splits = text_splitter.split_documents(docs)
-    vectorstore = Chroma.from_documents(documents=splits, embedding=OpenAIEmbeddings() if USE_OPENAI else OllamaEmbeddings(model="mxbai-embed-large"))
-
-    # Retrieve and generate using the relevant snippets of the blog.
-    retriever = vectorstore.as_retriever(f"group:{chatbot_name}", search_type="mmr")
-    return retriever
 
 def store_knowledge(chatbot_name):
     # Initialize the vector store, loading from the persisted directory if it exists
