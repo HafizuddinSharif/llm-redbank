@@ -5,6 +5,10 @@ from main import *
 import requests
 import json
 
+from datetime import datetime
+from datetime import date
+import time
+
 class Query(BaseModel):
     query: str
     session_id: str
@@ -40,6 +44,13 @@ def testData(sessionId: SessionId):
     printAllSession()
 
     return{"testData completed"}
+
+def days_between_dates(dt1, dt2):
+    date_format = "%Y-%m-%d"
+    a = time.mktime(time.strptime(dt1, date_format))
+    b = time.mktime(time.strptime(dt2, date_format))
+    delta = b - a
+    return int(delta / 86400)
 
 @app.post("/send-brn")
 def send_brn_start_conversation(customerData: CustomerData):
@@ -151,3 +162,40 @@ def printAllSession():
     print(sessionIdList)
 
 ## TODO: API for suggested bubble - redflags, 
+@app.post("/bubble")
+def bubble(query_txt: Query):
+    print("calling bubble with: " + query_txt.query + " with session_id: " + query_txt.session_id)
+
+    if findSession(query_txt.session_id):
+        print("session exist, check the target bubble")
+
+        if (query_txt.query == 'redflags'):
+            #print("find redflags")
+
+            brn = getBrn(query_txt.session_id)
+            print("brn from sessionId: ", brn)
+
+            ## call findRedflags
+            redflagsResponse = extract_redflags(brn)
+            print("redflagsresponse: ", redflagsResponse)
+
+            redflags_query = "Please return all the red flags description for this data: " + " " + str(redflagsResponse)
+
+            url = 'http://127.0.0.1:8000/chat/sharif'
+            data = {"query": redflags_query, "session_id": query_txt.session_id}
+            response = requests.post(url, json=data)
+
+            post_response_json = response.json()
+            print("post response json: ")
+            #print(post_response_json["answer"])
+    else:
+        return("Session not FOUND, BRN info does not exist")
+
+    #return {query_txt.session_id:post_response_json["answer"]}
+    return {query_txt.session_id:post_response_json}
+    
+def getBrn(sessionId):
+    if sessionId in brnSessionIdDict:
+        return(brnSessionIdDict[sessionId])
+    else:
+        return(1)
