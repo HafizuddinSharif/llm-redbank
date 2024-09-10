@@ -191,8 +191,9 @@ def bubble(query_txt: Query):
     else:
         return("Session not FOUND, BRN info does not exist")
 
-    #return {query_txt.session_id:post_response_json["answer"]}
-    return {query_txt.session_id:post_response_json}
+    return {query_txt.session_id:post_response_json["answer"]}
+    # to debug the entire context return by bot
+    #return {query_txt.session_id:post_response_json}
     
 def getBrn(sessionId):
     if sessionId in brnSessionIdDict:
