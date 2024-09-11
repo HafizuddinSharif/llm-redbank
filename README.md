@@ -85,7 +85,21 @@ curl --location 'http://127.0.0.1:8181/send-brn' \
 }'
 ```
 
-3. copy the session-id from the send-brn response and replace the requests payload in askMe
+3. Update the bot with the latest training file (you only need to do it once).
+
+You will need to create a form-data in the postman Body.
+
+```
+curl --location --request PUT 'http://127.0.0.1:8000/sharif/save' \
+--form 'chatbot_title="sharif"' \
+--form 'answerMethod="answer normally"' \
+--form 'status="active"' \
+--form 'files=@"/D:/CIMB/Hackathon/octoadvisor/llm-redbank/data/pdf/CTOS-Training-redflags.pdf"' \
+--form 'description="bla bla bla"'
+```
+http://127.0.0.1:8000/sharif/save
+
+4. copy the session-id from the send-brn response and replace the requests payload in askMe
 
 ```
 curl --location 'http://127.0.0.1:8181/askMe' \

@@ -41,19 +41,19 @@
     <enquiry seq="1">
       <section_summary>
         <ctos>
-          <bankruptcy status="0"/>
+          <bankruptcy status="1"/>
           <legal total="0" value="0"/>
           <legal_personal_capacity total="0" value="0"/>
           <legal_non_personal_capacity total="0" value="0"/>
           <related_parties>
-            <bankruptcy status="0"/>
+            <bankruptcy status="1"/>
             <legal total="0" value="0"/>
             <legal_personal_capacity total="0" value="0"/>
             <legal_non_personal_capacity total="0" value="0"/>
           </related_parties>
         </ctos>
         <tr>
-          <trex_ref negative="0" positive="0"/>
+          <trex_ref negative="1" positive="1"/>
           <related_parties>
             <trex_ref negative="0" positive="0"/>
           </related_parties>
@@ -93,7 +93,7 @@
           <source>SSM</source>
           <previous_cpo_date/>
           <cpo_date>01-07-2024</cpo_date>
-          <register_date>28-11-2018</register_date>
+          <register_date>28-11-2023</register_date>
           <comp_category code="S">LIMITED BY SHARES</comp_category>
           <comp_type code="R">PRIVATE LIMITED</comp_type>
           <status>EXISTING</status>
@@ -159,7 +159,7 @@
               <return_on_equity>-79.0</return_on_equity>
               <currat>1.11</currat>
               <workcap>19786.00</workcap>
-              <gear>19.0</gear>
+              <gear>190.0</gear>
               <dividen_pay_out>0.0</dividen_pay_out>
               <dividen_per_share>0.0</dividen_per_share>
               <new_form>1</new_form>
@@ -260,7 +260,7 @@
           </capital_details>
           <brn_ssm>1408874K</brn_ssm>
           <msic_ssms>
-            <msic_ssm code="56107" priority="1">Food or beverage, food and beverage preparation in market stalls/hawkers</msic_ssm>
+            <msic_ssm code="63910" priority="1">Food or beverage, food and beverage preparation in market stalls/hawkers</msic_ssm>
           </msic_ssms>
         </record>
       </section_a>

@@ -216,9 +216,30 @@ FE to send query with session_id
 **response:**
 
 ```
-[
-    "askMe successful"
-]
+{
+    "7323134e-297a-420b-98fb-34f5fcb3cacc": "The total revenue for the years 2021, 2020 and 2022 is: 1320508.00, 1149104.00 and 1483001.00 respectively.  Summing these figures yields a total revenue of 4942615.00. \n"
+}
+```
+
+## POST "/bubble"
+
+FE to send query with session_id
+
+**request:**
+
+```
+{
+    "query": "redflags",
+    "session_id": "e5c9393e-fefd-4006-b51e-99afef8c2903"
+}
+```
+
+**response:**
+
+```
+{
+    "7323134e-297a-420b-98fb-34f5fcb3cacc": "Here's a breakdown of red flags based on the provided data, along with explanations:\n\n**High-Risk Indicators:**\n\n* **Customer Bankruptcy Status (True):**  This is a major red flag. It indicates that the customer has a history of financial distress and likely faces significant challenges in meeting their obligations. This could lead to delayed payments or even defaulting on loans.\n* **Customer Related Parties Bankruptcy Status (True):**  Similar to the above, this suggests a systemic issue within the customer's business network. It indicates potential interconnectedness with other businesses that are also facing financial difficulties. \n* **Negative Profit Margin (-4.0):** A negative profit margin is already a warning sign of financial instability. This means the company is losing money on every sale, which could be due to high costs or low sales volume.  \n* **Legal Status (1) and Summon/Writ Files:** Legal issues are always a red flag. The presence of legal proceedings like \"Summon/Writ files\" suggests potential disputes with creditors, suppliers, or even customers. This can lead to further financial strain and delays in operations. \n* **Age of Company (287 years):** While not inherently negative, the age of the company is a factor that needs context.  A very long-standing business might have accumulated debt or faced challenges over time. It's important to understand if this age is due to slow growth or a more recent downturn.\n\n**Additional Considerations:**\n\n* **MSIC SSM Code (63910):** This code likely refers to a specific industry classification, but without further context, it's difficult to assess its significance. \n* **trex_status (True):**  \"trex\" is not a standard term in business or finance. It needs clarification to understand the meaning and potential implications for this company.\n\n**Important Notes:**\n\n* **Context is Key:** These red flags alone don't tell the whole story. To fully assess risk, you need additional information about the customer's industry, financial history, recent performance, and overall business environment.\n* **Professional Advice:**  It's crucial to consult with a financial expert or legal professional for a comprehensive assessment of this data and its implications. \n\n\nLet me know if you have any more context or specific questions! \n"
+}
 ```
 
 ## PUT "/{chatbot_name}/save"

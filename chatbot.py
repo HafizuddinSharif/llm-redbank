@@ -64,7 +64,7 @@ def store_knowledge(chatbot_name):
     docs = load_documents(chatbot_name=chatbot_name)
 
     # Split the documents into chunks
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=3000, chunk_overlap=750)
     splits = text_splitter.split_documents(docs)
 
     # Refresh the knowledge base with existing and newly uploaded files
