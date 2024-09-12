@@ -178,7 +178,7 @@ def bubble(query_txt: Query):
             response = requests.post(url, json=data)
 
             post_response_json = response.json()
-            print("post response json: ")
+            #print("post response json: ")
             #print(post_response_json["answer"])
     else:
         return("Session not FOUND, BRN info does not exist")
