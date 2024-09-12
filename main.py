@@ -144,7 +144,7 @@ async def on_chat(chatbot_name: str, query_obj: QueryObject):
 # POST request for creating chatbots in the back office
 # ========================================================================
 @app.post("/create-chatbot")
-async def save_chatbot_settings(chatbot_title: str = Form(...), answerMethod: str = Form(...), status: str = Form(...), files: List[UploadFile] = File(...)):
+async def save_chatbot_settings(chatbot_title: str = Form(...), description: str = Form(...), answerMethod: str = Form(...), status: str = Form(...), files: List[UploadFile] = File(...)):
     # Set the name of the chatbot from the chatbot_title input
     chatbot_name = chatbot_title.replace(' ', '_').lower()
 
@@ -158,6 +158,7 @@ async def save_chatbot_settings(chatbot_title: str = Form(...), answerMethod: st
         "name": chatbot_name,
         "title": chatbot_title,
         "status": status,
+        "description": description,
         "instruction": answerMethod
     }
     # Setup the saved/updated chatbot
