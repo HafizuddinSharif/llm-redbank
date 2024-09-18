@@ -45,13 +45,6 @@ def testData(sessionId: SessionId):
 
     return{"testData completed"}
 
-def days_between_dates(dt1, dt2):
-    date_format = "%Y-%m-%d"
-    a = time.mktime(time.strptime(dt1, date_format))
-    b = time.mktime(time.strptime(dt2, date_format))
-    delta = b - a
-    return int(delta / 86400)
-
 @app.post("/send-brn")
 def send_brn_start_conversation(customerData: CustomerData):
     print("send-brn with brn: " + customerData.brn)
@@ -83,9 +76,7 @@ def askMe(query_txt: Query):
     print("calling askMe with: " + query_txt.query + " with session_id: " + query_txt.session_id)
 
     # send question to mainBot
-
-    post_response_json = "UNKNOWN"
-
+   
     # check if session id exist, if exist, call /chat, if not exist call /sharif
     if findSession(query_txt.session_id):
         # call /chat/{chatbot_name}
@@ -161,10 +152,11 @@ def findSession(sessionId):
 def printAllSession():
     print(sessionIdList)
 
-## TODO: API for suggested bubble - redflags, 
 @app.post("/bubble")
 def bubble(query_txt: Query):
     print("calling bubble with: " + query_txt.query + " with session_id: " + query_txt.session_id)
+
+    post_response_json["answer"] = "UNKNOWN"
 
     if findSession(query_txt.session_id):
         print("session exist, check the target bubble")
@@ -186,7 +178,7 @@ def bubble(query_txt: Query):
             response = requests.post(url, json=data)
 
             post_response_json = response.json()
-            print("post response json: ")
+            #print("post response json: ")
             #print(post_response_json["answer"])
     else:
         return("Session not FOUND, BRN info does not exist")

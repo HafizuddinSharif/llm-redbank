@@ -149,8 +149,8 @@
               <bsqmint>0.00</bsqmint>
               <tot>1606634.00</tot>
               <turnover>1483001.00</turnover>
-              <plnpbt>-59422.00</plnpbt>
-              <plnpat>-63323.00</plnpat>
+              <plnpbt>59422.00</plnpbt>
+              <plnpat>63323.00</plnpat>
               <plminin>0.00</plminin>
               <plnetdiv>0.00</plnetdiv>
               <plyear>-63323.00</plyear>
@@ -158,8 +158,8 @@
               <profit_margin>-4.0</profit_margin>
               <return_on_equity>-79.0</return_on_equity>
               <currat>1.11</currat>
-              <workcap>19786.00</workcap>
-              <gear>190.0</gear>
+              <workcap>1119786.00</workcap>
+              <gear>0.0</gear>
               <dividen_pay_out>0.0</dividen_pay_out>
               <dividen_per_share>0.0</dividen_per_share>
               <new_form>1</new_form>
@@ -198,7 +198,7 @@
               <profit_margin>8.0</profit_margin>
               <return_on_equity>61.2</return_on_equity>
               <currat>1.55</currat>
-              <workcap>47789.00</workcap>
+              <workcap>1147789.00</workcap>
               <gear>0.6</gear>
               <dividen_pay_out>0.0</dividen_pay_out>
               <dividen_per_share>0.0</dividen_per_share>
@@ -238,7 +238,7 @@
               <profit_margin>2.9</profit_margin>
               <return_on_equity>0.0</return_on_equity>
               <currat>0.23</currat>
-              <workcap>-153973.00</workcap>
+              <workcap>11153973.00</workcap>
               <gear>0.0</gear>
               <dividen_pay_out>0.0</dividen_pay_out>
               <dividen_per_share>0.0</dividen_per_share>

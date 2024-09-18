@@ -23,7 +23,7 @@ def extract_redflags(brn):
     # extract bankruptcy status
     bankruptcy = xml_dict['report']['enq_report']['enquiry']['section_summary']['ctos']['bankruptcy']
     bankruptcy_status = bankruptcy['@status']
-    print("bankruptcy_status: ", bankruptcy_status)
+    #print("bankruptcy_status: ", bankruptcy_status)
     if(int(bankruptcy_status) == 1):
         redflags_data['customer_bankruptcy_status'] = True
     else:
@@ -31,7 +31,7 @@ def extract_redflags(brn):
 
     related_parties_bankruptcy = related_parties_bankruptcy = xml_dict['report']['enq_report']['enquiry']['section_summary']['ctos']['related_parties']['bankruptcy']
     related_parties_bankruptcy_status = related_parties_bankruptcy['@status']
-    print("related_parties_bankruptcy_status: ", related_parties_bankruptcy_status)
+    #print("related_parties_bankruptcy_status: ", related_parties_bankruptcy_status)
     if(int(related_parties_bankruptcy_status) == 1):
         redflags_data['customer_related_parties_bankruptcy_status'] = True
     else:
@@ -68,7 +68,7 @@ def extract_redflags(brn):
                 latestYear = int(currentYear)
                 latestGearRatio = gear_accounts[i][key]
 
-    print("latestGearRatio:" , latestGearRatio , ", for latestYear:", latestYear)
+    #print("latestGearRatio:" , latestGearRatio , ", for latestYear:", latestYear)
     redflags_data['gearing_ratio'] = latestGearRatio
 
     ## extract profit_margin
@@ -98,7 +98,7 @@ def extract_redflags(brn):
                 latestYear = int(currentYear)
                 latestProfitMargin = accounts[i][key]
 
-    print("latestProfitMargin:" , latestProfitMargin , ", for latestYear:", latestYear)
+    #print("latestProfitMargin:" , latestProfitMargin , ", for latestYear:", latestYear)
     redflags_data['profit_margin'] = latestProfitMargin
 
 
@@ -106,7 +106,7 @@ def extract_redflags(brn):
     legal = xml_dict['report']['enq_report']['enquiry']['section_ccris']['summary']['legal']
 
     legalStatus = legal['@status']
-    print("legal_status: " + legalStatus)
+    #print("legal_status: " + legalStatus)
 
     if int(legalStatus) == 1:
         legal_accounts = xml_dict['report']['enq_report']['enquiry']['section_ccris']['accounts']['account']
@@ -157,22 +157,22 @@ def extract_redflags(brn):
     ## extract numOfDays
     
     registerDate = xml_dict['report']['enq_report']['enquiry']['section_a']['record']['register_date']
-    print(str(registerDate))
+    #print(str(registerDate))
 
     registerDateObj = datetime.strptime(registerDate, '%d-%m-%Y').date()
     #print(type(registerDateObj))
-    print(registerDateObj)  # printed in default format
+    #print(registerDateObj)  # printed in default format
 
     now = datetime.now()
     #print("now =", now)
     todayDate = now.strftime("%Y-%m-%d")
-    print("todayDate =", todayDate)
+    #print("todayDate =", todayDate)
 
     #today = date.today()
     #print("Today's date:", today)
 
     numOfDays = days_between_dates(str(registerDateObj),str(todayDate))
-    print("age: ", numOfDays)
+    #related_parties_bankruptcy_statusprint("age: ", numOfDays)
     redflags_data['age_of_company in days'] = numOfDays
     
 
@@ -261,7 +261,7 @@ def extract_xml(brn):
 
     related_parties_bankruptcy = related_parties_bankruptcy = xml_dict['report']['enq_report']['enquiry']['section_summary']['ctos']['related_parties']['bankruptcy']
     related_parties_bankruptcy_status = related_parties_bankruptcy['@status']
-    print("related_parties_bankruptcy_status: ", related_parties_bankruptcy_status)
+    #print("related_parties_bankruptcy_status: ", related_parties_bankruptcy_status)
     if(int(related_parties_bankruptcy_status) == 1):
         extracted_data['customer_related_parties_bankruptcy_status'] = True
     else:
@@ -271,7 +271,7 @@ def extract_xml(brn):
     legal = xml_dict['report']['enq_report']['enquiry']['section_ccris']['summary']['legal']
 
     legalStatus = legal['@status']
-    print("legal_status: " + legalStatus)
+    #print("legal_status: " + legalStatus)
 
     if int(legalStatus) == 1:
         legal_accounts = xml_dict['report']['enq_report']['enquiry']['section_ccris']['accounts']['account']
@@ -320,22 +320,22 @@ def extract_xml(brn):
     ## extract numOfDays
     
     registerDate = xml_dict['report']['enq_report']['enquiry']['section_a']['record']['register_date']
-    print(str(registerDate))
+    #print(str(registerDate))
 
     registerDateObj = datetime.strptime(registerDate, '%d-%m-%Y').date()
     #print(type(registerDateObj))
-    print(registerDateObj)  # printed in default format
+    #print(registerDateObj)  # printed in default format
 
     now = datetime.now()
     #print("now =", now)
     todayDate = now.strftime("%Y-%m-%d")
-    print("todayDate =", todayDate)
+    #print("todayDate =", todayDate)
 
     #today = date.today()
     #print("Today's date:", today)
 
     numOfDays = days_between_dates(str(registerDateObj),str(todayDate))
-    print("age: ", numOfDays)
+    #print("age: ", numOfDays)
     extracted_data['age_of_company in days'] = numOfDays
 
     return extracted_data
