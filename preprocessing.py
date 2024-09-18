@@ -76,9 +76,7 @@ def askMe(query_txt: Query):
     print("calling askMe with: " + query_txt.query + " with session_id: " + query_txt.session_id)
 
     # send question to mainBot
-
-    post_response_json = "UNKNOWN"
-
+   
     # check if session id exist, if exist, call /chat, if not exist call /sharif
     if findSession(query_txt.session_id):
         # call /chat/{chatbot_name}
@@ -157,6 +155,8 @@ def printAllSession():
 @app.post("/bubble")
 def bubble(query_txt: Query):
     print("calling bubble with: " + query_txt.query + " with session_id: " + query_txt.session_id)
+
+    post_response_json["answer"] = "UNKNOWN"
 
     if findSession(query_txt.session_id):
         print("session exist, check the target bubble")
