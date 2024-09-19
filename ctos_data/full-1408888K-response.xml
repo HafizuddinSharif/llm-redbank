@@ -93,7 +93,7 @@
           <source>SSM</source>
           <previous_cpo_date/>
           <cpo_date>01-07-2024</cpo_date>
-          <register_date>28-11-2018</register_date>
+          <register_date>28-11-2014</register_date>
           <comp_category code="S">LIMITED BY SHARES</comp_category>
           <comp_type code="R">PRIVATE LIMITED</comp_type>
           <status>EXISTING</status>
@@ -149,17 +149,17 @@
               <bsqmint>0.00</bsqmint>
               <tot>1606634.00</tot>
               <turnover>2483001.00</turnover>
-              <plnpbt>-359422.00</plnpbt>
-              <plnpat>-63323.00</plnpat>
+              <plnpbt>1359422.00</plnpbt>
+              <plnpat>563323.00</plnpat>
               <plminin>0.00</plminin>
               <plnetdiv>0.00</plnetdiv>
-              <plyear>-63323.00</plyear>
+              <plyear>563323.00</plyear>
               <turnover_growth>2.3</turnover_growth>
-              <profit_margin>-34.0</profit_margin>
-              <return_on_equity>-79.0</return_on_equity>
+              <profit_margin>34.0</profit_margin>
+              <return_on_equity>79.0</return_on_equity>
               <currat>10.11</currat>
               <workcap>119786.00</workcap>
-              <gear>19.0</gear>
+              <gear>1.0</gear>
               <dividen_pay_out>0.0</dividen_pay_out>
               <dividen_per_share>0.0</dividen_per_share>
               <new_form>1</new_form>
@@ -189,11 +189,11 @@
               <bsqmint>0.00</bsqmint>
               <tot>230320.00</tot>
               <turnover>2320508.00</turnover>
-              <plnpbt>205717.00</plnpbt>
-              <plnpat>87807.00</plnpat>
+              <plnpbt>1205717.00</plnpbt>
+              <plnpat>587807.00</plnpat>
               <plminin>0.00</plminin>
               <plnetdiv>0.00</plnetdiv>
-              <plyear>87807.00</plyear>
+              <plyear>587807.00</plyear>
               <turnover_growth>34.9</turnover_growth>
               <profit_margin>80.9</profit_margin>
               <return_on_equity>61.2</return_on_equity>
@@ -229,16 +229,16 @@
               <bsqmint>0.00</bsqmint>
               <tot>156347.00</tot>
               <turnover>2149104.00</turnover>
-              <plnpbt>132961.00</plnpbt>
-              <plnpat>32961.00</plnpat>
+              <plnpbt>1132961.00</plnpbt>
+              <plnpat>532961.00</plnpat>
               <plminin>0.00</plminin>
               <plnetdiv>0.00</plnetdiv>
-              <plyear>32961.00</plyear>
+              <plyear>532961.00</plyear>
               <turnover_growth/>
-              <profit_margin>12.9</profit_margin>
+              <profit_margin>42.9</profit_margin>
               <return_on_equity>0.0</return_on_equity>
               <currat>1.23</currat>
-              <workcap>-153973.00</workcap>
+              <workcap>153973.00</workcap>
               <gear>0.0</gear>
               <dividen_pay_out>0.0</dividen_pay_out>
               <dividen_per_share>0.0</dividen_per_share>
@@ -403,7 +403,7 @@
             <borrower total_limit="70000.00" fec_limit="0.00">44300.00</borrower>
             <guarantor/>
           </liabilities>
-          <legal status="1"/>
+          <legal status="0"/>
           <special_attention status="0"/>
           <special_name status="0"/>
         </summary>
@@ -562,9 +562,9 @@
                 <value/>
               </collateral>
             </collaterals>
-            <legal status="10">
-              <name>Summon/Writ files</name>
-              <date>02-04-2024</date>
+            <legal status="0">
+              <name/>
+              <date/>
             </legal>
             <sub_accounts>
               <sub_account>
