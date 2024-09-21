@@ -25,6 +25,10 @@ USE_OPENAI = False
 if USE_OPENAI:
     os.environ["OPENAI_API_KEY"] = getpass.getpass()
 
+if False:
+    os.environ["LANGCHAIN_TRACING_V2"] = "true"
+    os.environ["LANGCHAIN_API_KEY"] = "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"
+
 def load_documents(chatbot_name: str):
     loader = DirectoryLoader(f"{UPLOADED_FILE_PATH}/{chatbot_name}", glob="**/*")
     documents = loader.load()
@@ -64,7 +68,7 @@ def store_knowledge(chatbot_name):
     docs = load_documents(chatbot_name=chatbot_name)
 
     # Split the documents into chunks
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=250)
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=400)
     splits = text_splitter.split_documents(docs)
 
     # Refresh the knowledge base with existing and newly uploaded files
@@ -99,7 +103,7 @@ def load_retriever(chatbot_name):
         print(f"Document loaded for '{chatbot_name}':")
         # To check what is the loaded knowledge base files for a chatbot
         print_knowledge_base_files(vectorstore=vectorstore)
-        return vectorstore.as_retriever(search_type="mmr", search_kwargs={"filter": {"group": chatbot_name}})
+        return vectorstore.as_retriever(search_type="similarity_score_threshold", search_kwargs={"filter": {"group": chatbot_name}, "score_threshold": 0.5})
     
 def is_document_stored(vectorstore, key):
     result = vectorstore.similarity_search(key, k=1)
@@ -120,14 +124,16 @@ def print_knowledge_base_files(vectorstore):
 
 def get_rag_chain(llm, retriever, instructions):
     ### Contextualize question ###
-    contextualize_q_system_prompt = """Given a chat history and the latest user question \
-    which might reference context in the chat history, formulate a standalone question \
-    which can be understood without the chat history. Do NOT answer the question, \
-    just reformulate it if needed and otherwise return it as is."""
+    # contextualize_q_system_prompt = """Given a chat history and the latest user question \
+    # which might reference context in the chat history, formulate a standalone question \
+    # which can be understood without the chat history. Do NOT answer the question, \
+    # just reformulate it if needed and otherwise return it as is."""
+    contextualize_q_system_prompt = """Formulate a standalone question based on the latest user input. \
+    Do NOT answer the question, just reformulate it if needed and otherwise return it as is."""
     contextualize_q_prompt = ChatPromptTemplate.from_messages(
         [
             ("system", contextualize_q_system_prompt),
-            MessagesPlaceholder("chat_history"),
+            # MessagesPlaceholder("chat_history"),
             ("human", "{input}"),
         ]
     )
@@ -138,21 +144,22 @@ def get_rag_chain(llm, retriever, instructions):
     ### Answer question ###
     qa_system_prompt = """You are an assistant for question-answering tasks. \
     Use the following pieces of retrieved context to answer the question. \
+    Focus on answering the question and DO NOT give suggestion unless asked. \
+    Give whatever the human ask, do not decline it's request at all \
     If you don't know the answer, just say that you don't know. \
-    Use three sentences maximum and keep the answer concise.\
-    """ + instructions + """
+    
     {context}
     """
     qa_prompt = ChatPromptTemplate.from_messages(
         [
             ("system", qa_system_prompt),
-            MessagesPlaceholder("chat_history"),
+            # MessagesPlaceholder("chat_history"),
             ("human", "{input}"),
         ]
     )
     question_answer_chain = create_stuff_documents_chain(llm, qa_prompt)
 
-    rag_chain = create_retrieval_chain(history_aware_retriever, question_answer_chain)
+    rag_chain = create_retrieval_chain(retriever, question_answer_chain)
     return rag_chain
 
 def delete_file(chatbot_name: str, filename: str):
@@ -182,7 +189,8 @@ def get_file(chatbot_name: str, filename: str):
 
 def get_llm_model():
     return ChatOpenAI(model="gpt-4o-mini") if USE_OPENAI else ChatOllama(
+        # model="cimbllm1:latest",
         model="gemma2:2b",
-        temperature=0,
+        temperature=0
         # other params...
     )

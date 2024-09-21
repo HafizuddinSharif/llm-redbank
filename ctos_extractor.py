@@ -242,7 +242,7 @@ def extract_xml(brn):
             if accounts[i][key] is None:
                 accounts[i][key] = 0.0
 
-            extracted_data[label + " in " + currentYear] = accounts[i][key]
+            extracted_data[key + "_" + currentYear] = accounts[i][key]
 
     # Print the extracted data
     # for label, value in extracted_data.items():
@@ -251,91 +251,92 @@ def extract_xml(brn):
 
     # To include redflags data into initial data submitted to chatbot
     # extract bankruptcy status
-    bankruptcy = xml_dict['report']['enq_report']['enquiry']['section_summary']['ctos']['bankruptcy']
-    bankruptcy_status = bankruptcy['@status']
-    print("bankruptcy_status: ", bankruptcy_status)
-    if(int(bankruptcy_status) == 1):
-        extracted_data['customer_bankruptcy_status'] = True
-    else:
-        extracted_data['customer_bankruptcy_status'] = False
+    # bankruptcy = xml_dict['report']['enq_report']['enquiry']['section_summary']['ctos']['bankruptcy']
+    # bankruptcy_status = bankruptcy['@status']
+    # print("bankruptcy_status: ", bankruptcy_status)
+    # if(int(bankruptcy_status) == 1):
+    #     extracted_data['customer_bankruptcy_status'] = True
+    # else:
+    #     extracted_data['customer_bankruptcy_status'] = False
 
-    related_parties_bankruptcy = related_parties_bankruptcy = xml_dict['report']['enq_report']['enquiry']['section_summary']['ctos']['related_parties']['bankruptcy']
-    related_parties_bankruptcy_status = related_parties_bankruptcy['@status']
-    #print("related_parties_bankruptcy_status: ", related_parties_bankruptcy_status)
-    if(int(related_parties_bankruptcy_status) == 1):
-        extracted_data['customer_related_parties_bankruptcy_status'] = True
-    else:
-        extracted_data['customer_related_parties_bankruptcy_status'] = False
+    # # COMMENT FROM HEREEEE
+    # related_parties_bankruptcy = related_parties_bankruptcy = xml_dict['report']['enq_report']['enquiry']['section_summary']['ctos']['related_parties']['bankruptcy']
+    # related_parties_bankruptcy_status = related_parties_bankruptcy['@status']
+    # #print("related_parties_bankruptcy_status: ", related_parties_bankruptcy_status)
+    # if(int(related_parties_bankruptcy_status) == 1):
+    #     extracted_data['customer_related_parties_bankruptcy_status'] = True
+    # else:
+    #     extracted_data['customer_related_parties_bankruptcy_status'] = False
 
 
-    legal = xml_dict['report']['enq_report']['enquiry']['section_ccris']['summary']['legal']
+    # legal = xml_dict['report']['enq_report']['enquiry']['section_ccris']['summary']['legal']
 
-    legalStatus = legal['@status']
-    #print("legal_status: " + legalStatus)
+    # legalStatus = legal['@status']
+    # #print("legal_status: " + legalStatus)
 
-    if int(legalStatus) == 1:
-        legal_accounts = xml_dict['report']['enq_report']['enquiry']['section_ccris']['accounts']['account']
+    # if int(legalStatus) == 1:
+    #     legal_accounts = xml_dict['report']['enq_report']['enquiry']['section_ccris']['accounts']['account']
 
-        legal_tags_to_extract = {
-            'legal': 'legal'
-        }
+    #     legal_tags_to_extract = {
+    #         'legal': 'legal'
+    #     }
 
-        dictLen = len(legal_accounts)
-        #print("dictlen = " + str(dictLen))
-        #print(legal_accounts[1])
+    #     dictLen = len(legal_accounts)
+    #     #print("dictlen = " + str(dictLen))
+    #     #print(legal_accounts[1])
 
-        for i in range(dictLen):
-            for key, label in legal_tags_to_extract.items():
-                legalTag = legal_accounts[i][key]
-                #print("legalTag: " + str(legalTag))
+    #     for i in range(dictLen):
+    #         for key, label in legal_tags_to_extract.items():
+    #             legalTag = legal_accounts[i][key]
+    #             #print("legalTag: " + str(legalTag))
 
-                if 'name' in legalTag:
-                    name = legalTag['name']
-                    #print("name is found:" + name)
-                    date = legalTag['date']
-                    #print("date is found:" + date)
+    #             if 'name' in legalTag:
+    #                 name = legalTag['name']
+    #                 #print("name is found:" + name)
+    #                 date = legalTag['date']
+    #                 #print("date is found:" + date)
 
-                    extracted_data['legal_status'] = legalStatus
-                    extracted_data['legal_status_name'] = name
-                    extracted_data['legal_status_date'] = date
+    #                 extracted_data['legal_status'] = legalStatus
+    #                 extracted_data['legal_status_name'] = name
+    #                 extracted_data['legal_status_date'] = date
     
-    msic_ssm = xml_dict['report']['enq_report']['enquiry']['section_a']['record']['msic_ssms']['msic_ssm']
-    #print(str(msic_ssms))
+    # msic_ssm = xml_dict['report']['enq_report']['enquiry']['section_a']['record']['msic_ssms']['msic_ssm']
+    # #print(str(msic_ssms))
 
-    msic_ssm_code = msic_ssm['@code']
-    extracted_data['msic_ssm_code'] = msic_ssm_code
+    # msic_ssm_code = msic_ssm['@code']
+    # extracted_data['msic_ssm_code'] = msic_ssm_code
 
-    trexRef = xml_dict['report']['enq_report']['enquiry']['section_summary']['tr']['trex_ref']
-    #print(str(trexRef))
+    # trexRef = xml_dict['report']['enq_report']['enquiry']['section_summary']['tr']['trex_ref']
+    # #print(str(trexRef))
 
-    trexRefNegative = trexRef['@negative']
-    trexRefPositive = trexRef['@positive']
+    # trexRefNegative = trexRef['@negative']
+    # trexRefPositive = trexRef['@positive']
 
-    if trexRefNegative == '0' and trexRefPositive == '0':
-        extracted_data['trex_status'] = False
-    else:
-        extracted_data['trex_status'] = True
+    # if trexRefNegative == '0' and trexRefPositive == '0':
+    #     extracted_data['trex_status'] = False
+    # else:
+    #     extracted_data['trex_status'] = True
 
 
-    ## extract numOfDays
+    # ## extract numOfDays
     
-    registerDate = xml_dict['report']['enq_report']['enquiry']['section_a']['record']['register_date']
-    #print(str(registerDate))
+    # registerDate = xml_dict['report']['enq_report']['enquiry']['section_a']['record']['register_date']
+    # #print(str(registerDate))
 
-    registerDateObj = datetime.strptime(registerDate, '%d-%m-%Y').date()
-    #print(type(registerDateObj))
-    #print(registerDateObj)  # printed in default format
+    # registerDateObj = datetime.strptime(registerDate, '%d-%m-%Y').date()
+    # #print(type(registerDateObj))
+    # #print(registerDateObj)  # printed in default format
 
-    now = datetime.now()
-    #print("now =", now)
-    todayDate = now.strftime("%Y-%m-%d")
-    #print("todayDate =", todayDate)
+    # now = datetime.now()
+    # #print("now =", now)
+    # todayDate = now.strftime("%Y-%m-%d")
+    # #print("todayDate =", todayDate)
 
-    #today = date.today()
-    #print("Today's date:", today)
+    # # #today = date.today()
+    # # #print("Today's date:", today)
 
-    numOfDays = days_between_dates(str(registerDateObj),str(todayDate))
-    #print("age: ", numOfDays)
-    extracted_data['age_of_company in days'] = numOfDays
+    # numOfDays = days_between_dates(str(registerDateObj),str(todayDate))
+    # #print("age: ", numOfDays)
+    # extracted_data['age_of_company in days'] = numOfDays
 
     return extracted_data

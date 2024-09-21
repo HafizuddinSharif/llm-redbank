@@ -31,7 +31,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:4200"],  # Angular default URL
+    allow_origins=["*"],  # Angular default URL
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -85,7 +85,10 @@ def askMe(query_txt: Query):
         currentBrnData = getBrnData(query_txt.session_id)
         #print(currentBrnData)
 
-        formulated_query = query_txt.query + " " + currentBrnData
+        brn = getBrn(query_txt.session_id)
+        redflagsResponse = extract_redflags(brn)
+        # print(redflagsResponse)
+        formulated_query = query_txt.query + "\n\nCustomer data: " + currentBrnData + "\n\nRed Flag data: " + str(redflagsResponse)
 
         url = 'http://127.0.0.1:8000/chat/sharif'
         data = {"query": formulated_query, "session_id": query_txt.session_id}
@@ -101,6 +104,7 @@ def askMe(query_txt: Query):
         return("Session not FOUND, BRN info does not exist")
     
     ## TODO: do we want to return entire response obj or only the answer?
+    print(post_response_json)
     return {query_txt.session_id:post_response_json["answer"]}
 
 def processing_ctos_data(brn, session_id):
@@ -156,7 +160,7 @@ def printAllSession():
 def bubble(query_txt: Query):
     print("calling bubble with: " + query_txt.query + " with session_id: " + query_txt.session_id)
 
-    post_response_json["answer"] = "UNKNOWN"
+    post_response_json = {"answer": "UNKNOWN"}
 
     if findSession(query_txt.session_id):
         print("session exist, check the target bubble")

@@ -24,16 +24,16 @@ chatbots = {
     "sharif": {
         "id": 1,
         "name": "sharif",
-        "title": "Sharif Chatbot",
-        "description": "To talk about Sharif in general",
+        "title": "ACE portal",
+        "description": "AI for assisting RM in dealing with SME customer to obtain loans",
         "status": "active",
-        "instruction": "You are Hafizuddin Sharif Bin Umar Sharif. You are going to answer the the user question like you are him."
+        "instruction": "You are an AI assistant designed to support Relationship Managers (RMs) in a financial institution. Your primary role is to help RMs assist Small and Medium Enterprise (SME) owners in obtaining suitable loans."
     },
     "ace_portal": {
         "id": 2,
         "name": "ace_portal",
-        "title": "ACE portal",
-        "description": "To talk about SME loan products",
+        "title": "SMELT portal",
+        "description": "AI for assisting public user on inquiring SME loan products",
         "status": "inactive",
         "instruction": "You will be answering question related to loan products. If the user ask for your name, say 'I like mermaids'. Don't say 'I like mermaids' if the use didnt ask for your name"
     }
@@ -55,7 +55,7 @@ app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:4200"],  # Angular default URL
+    allow_origins=["*"],  # Angular default URL
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -128,15 +128,20 @@ async def start_chat(chatbot_name: str, query: QueryObject):
 # ========================================================================
 @app.post("/chat/{chatbot_name}")
 async def on_chat(chatbot_name: str, query_obj: QueryObject):
-    if query_obj.session_id not in session_list:
-        return {"message": "No chat session started yet :("}
-     
+    # if query_obj.session_id not in session_list:
+    #     return {"message": "No chat session started yet :("}
+
+    print("QUERY: " + query_obj.query)
     query = chatbot[chatbot_name].invoke(
         {"input": query_obj.query},
         config={
             "configurable": {"session_id": query_obj.session_id}
         },  # constructs a key "abc123" in `store`.
     )
+
+    print("=============================")
+
+    print(query)
 
     return query
 
