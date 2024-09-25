@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 import uuid
 from fastapi import FastAPI, Form, File, UploadFile
 from fastapi.responses import FileResponse
@@ -215,7 +215,7 @@ def download_pdf():
 # PUT request for updating chatbots in the back office
 # ========================================================================
 @app.put("/{chatbot_name}/save")
-async def save_chatbot_settings(chatbot_name: str, chatbot_title: str = Form(...), description: str = Form(...), answerMethod: str = Form(...), status: str = Form(...), files: List[UploadFile] = File(...)):
+async def save_chatbot_settings(chatbot_name: str, chatbot_title: str = Form(...), description: str = Form(...), answerMethod: str = Form(...), status: str = Form(...), files: Optional[List[UploadFile]] = File(None)):
     # uploading documents
     file_locations = upload_documents(chatbot_name=chatbot_name, answerMethod=answerMethod, files=files)
     store_knowledge(chatbot_name=chatbot_name)
@@ -232,7 +232,11 @@ async def save_chatbot_settings(chatbot_name: str, chatbot_title: str = Form(...
     # Setup the saved/updated chatbot
     setup_chatbot(chatbot_name=chatbot_name, llm=get_llm_model())
 
-    return {"info": f"{len(files)} files successfully uploaded!", "files": file_locations}
+    num_of_files = 0
+    if files is not None:
+        num_of_files = len(files)
+
+    return {"info": f"{num_of_files} files successfully uploaded!", "files": file_locations}
 
 
 # ========================================================================

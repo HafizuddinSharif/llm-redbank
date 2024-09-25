@@ -44,6 +44,9 @@ def load_documents(chatbot_name: str):
 def upload_documents(chatbot_name: str, answerMethod: str = Form(...), files: List[UploadFile] = File(...)) -> List:
     file_locations = []
 
+    if files is None:
+        return file_locations
+
     # Create the upload directory if it doesn't exist
     Path(f"{UPLOADED_FILE_PATH}").mkdir(exist_ok=True)
     Path(f"{UPLOADED_FILE_PATH}/{chatbot_name}").mkdir(exist_ok=True)
