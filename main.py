@@ -19,19 +19,19 @@ retriever = {}
 rag_chain = {}
 chatbot = {}
 session_counter = 1
-list_of_chatbot_name = ["sharif", "ace_portal"]
+list_of_chatbot_name = ["ace_portal", "smelt_portal"]
 chatbots = {
-    "sharif": {
+    "ace_portal": {
         "id": 1,
-        "name": "sharif",
+        "name": "ace_portal",
         "title": "ACE portal",
         "description": "AI for assisting RM in dealing with SME customer to obtain loans",
         "status": "active",
-        "instruction": "You are an AI assistant designed to support Relationship Managers (RMs) in a financial institution. Your primary role is to help RMs assist Small and Medium Enterprise (SME) owners in obtaining suitable loans."
+        "instruction": "You are an AI assistant designed to support Relationship Managers (RMs) in a financial institution. Your primary role is to help RMs assist Small and Medium Enterprise (SME) owners in obtaining suitable loans. The user will provide CUSTOMER DATA and it's RED FLAGS, only use it if needed. If the question is not related to loan recommendation or about financial institution, remind the user that they can ask question about loan recommendation or about the customer financial metrics."
     },
-    "ace_portal": {
+    "smelt_portal": {
         "id": 2,
-        "name": "ace_portal",
+        "name": "smelt_portal",
         "title": "SMELT portal",
         "description": "AI for assisting public user on inquiring SME loan products",
         "status": "inactive",

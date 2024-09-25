@@ -50,7 +50,7 @@ def send_brn_start_conversation(customerData: CustomerData):
     print("send-brn with brn: " + customerData.brn)
 
     ## call main API /start-session/{chatbot_name} to get sessionId
-    url = 'http://127.0.0.1:8000/start-session/sharif'
+    url = 'http://127.0.0.1:8000/start-session/ace_portal'
     response = requests.get(url)
     currentSessionId = response.text.replace('"', '')
     print("Your sessionId: " + currentSessionId)
@@ -90,7 +90,7 @@ def askMe(query_txt: Query):
         # print(redflagsResponse)
         formulated_query = query_txt.query + "\n\nCustomer data: " + currentBrnData + "\n\nRed Flag data: " + str(redflagsResponse)
 
-        url = 'http://127.0.0.1:8000/chat/sharif'
+        url = 'http://127.0.0.1:8000/chat/ace_portal'
         data = {"query": formulated_query, "session_id": query_txt.session_id}
         response = requests.post(url, json=data)
 
@@ -177,7 +177,7 @@ def bubble(query_txt: Query):
 
             redflags_query = "Please return all the red flags description for this data: " + " " + str(redflagsResponse)
 
-            url = 'http://127.0.0.1:8000/chat/sharif'
+            url = 'http://127.0.0.1:8000/chat/ace_portal'
             data = {"query": redflags_query, "session_id": query_txt.session_id}
             response = requests.post(url, json=data)
 

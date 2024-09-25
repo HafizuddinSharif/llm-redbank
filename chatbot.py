@@ -23,7 +23,7 @@ UPLOADED_FILE_PATH = "uploaded_dir"
 USE_OPENAI = False
 
 if USE_OPENAI:
-    os.environ["OPENAI_API_KEY"] = getpass.getpass()
+    os.environ["OPENAI_API_KEY"] = "hidden"
 
 if False:
     os.environ["LANGCHAIN_TRACING_V2"] = "true"
@@ -103,7 +103,7 @@ def load_retriever(chatbot_name):
         print(f"Document loaded for '{chatbot_name}':")
         # To check what is the loaded knowledge base files for a chatbot
         print_knowledge_base_files(vectorstore=vectorstore)
-        return vectorstore.as_retriever(search_type="similarity_score_threshold", search_kwargs={"filter": {"group": chatbot_name}, "score_threshold": 0.5})
+        return vectorstore.as_retriever(search_type="similarity_score_threshold", search_kwargs={"filter": {"group": chatbot_name}, "score_threshold": 0.7})
     
 def is_document_stored(vectorstore, key):
     result = vectorstore.similarity_search(key, k=1)
@@ -145,9 +145,8 @@ def get_rag_chain(llm, retriever, instructions):
     qa_system_prompt = """You are an assistant for question-answering tasks. \
     Use the following pieces of retrieved context to answer the question. \
     Focus on answering the question and DO NOT give suggestion unless asked. \
-    Give whatever the human ask, do not decline it's request at all \
     If you don't know the answer, just say that you don't know. \
-    
+    """ + instructions + """
     {context}
     """
     qa_prompt = ChatPromptTemplate.from_messages(
