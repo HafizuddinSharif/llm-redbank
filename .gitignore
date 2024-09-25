@@ -35,7 +35,7 @@ chroma_db/*
 uploaded_dir/*
 
 # allowing certain data so it can be test out
-!chroma_db/sharif
+!chroma_db/smelt_portal
 !chroma_db/ace_portal
-!uploaded_dir/sharif
+!uploaded_dir/smelt_portal
 !uploaded_dir/ace_portal
