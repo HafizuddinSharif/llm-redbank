@@ -27,7 +27,7 @@ if USE_OPENAI:
 
 if False:
     os.environ["LANGCHAIN_TRACING_V2"] = "true"
-    os.environ["LANGCHAIN_API_KEY"] = "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"
+    os.environ["LANGCHAIN_API_KEY"] = "hidden"
 
 def load_documents(chatbot_name: str):
     loader = DirectoryLoader(f"{UPLOADED_FILE_PATH}/{chatbot_name}", glob="**/*")
